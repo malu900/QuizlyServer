@@ -9,4 +9,8 @@ import javax.persistence.Table;
 public class User {
     @Id
     private Long userId;
+
+    private String name;
+    private String email;
+    private String password;
 }

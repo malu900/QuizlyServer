@@ -10,8 +10,11 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long QuestionId;
 
-    //@OneToMany(fetch = FetchType.EAGER)
+    @OneToMany//(fetch = FetchType.EAGER)
     //@JoinColumn(name = "questionId", nullable = false)
-    private Answer Answers;
+    private List<Answer> Answers;
+
+    @ManyToOne
+    private Quiz quiz;
 
 }
