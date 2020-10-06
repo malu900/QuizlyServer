@@ -8,13 +8,12 @@ import java.util.List;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long QuestionId;
+    private long questionId;
 
     @OneToMany//(fetch = FetchType.EAGER)
     //@JoinColumn(name = "questionId", nullable = false)
-    private List<Answer> Answers;
+    private List<Answer> answers;
 
-    @ManyToOne
-    private Quiz quiz;
+    private String question;
 
 }

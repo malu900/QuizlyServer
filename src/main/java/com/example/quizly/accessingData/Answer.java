@@ -6,8 +6,7 @@ import javax.persistence.*;
 @Table(name="answers")
 public class Answer {
     @Id
-    private Long AnswerId;
+    private Long answerId;
 
-    @ManyToOne
-    private Question question;
+    private String answer;
 }

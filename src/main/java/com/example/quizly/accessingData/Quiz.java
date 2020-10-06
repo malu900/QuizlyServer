@@ -10,8 +10,10 @@ import java.util.List;
 @Table(name="quizzes")
 public class Quiz {
     @Id
-    private long QuizId;
+    private long quizId;
 
     @OneToMany
     private List<Question> questions;
+
+    private String quizName;
 }
