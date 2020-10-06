@@ -26,11 +26,11 @@ public class QuizService {
     }
 
     public String UpdateQuiz(Quiz quiz) {
-        Optional<Quiz> beverageFromDb = quizRepository.findById(quiz.getQuizId());
-        Quiz newQuiz = beverageFromDb.get();
+        Optional<Quiz> quizFromDb = quizRepository.findById(quiz.getQuizId());
+        Quiz newQuiz = quizFromDb.get();
         newQuiz.setQuizName(quiz.getQuizName());
         newQuiz.setQuestions(quiz.getQuestions());
-
+        newQuiz = quizRepository.save(newQuiz);
         return "Succesvol";
     }
 
