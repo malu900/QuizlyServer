@@ -26,7 +26,7 @@ public class QuizController {
         if (quizzes== null)
         {
             try {
-                throw new Exception("No beverages found : " + quizzes);
+                throw new Exception("No quiz found : " + quizzes);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -43,7 +43,7 @@ public class QuizController {
             quizService.AddQuiz(quiz);
             return "Saved";
         } catch (Exception e) {
-            throw new Exception("Cant find beverage to delete", e);
+            throw new Exception("Cant find quiz to delete", e);
         }
     }
 
@@ -53,7 +53,7 @@ public class QuizController {
         if (updateQuiz== null)
         {
             try {
-                throw new Exception("No beverages found to update: " + updateQuiz);
+                throw new Exception("No quiz found to update: " + updateQuiz);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -65,7 +65,7 @@ public class QuizController {
         try {
             quizService.DeleteQuiz(QuizId);
         } catch (Exception e) {
-            throw new Exception("Cant find beverage to delete", e);
+            throw new Exception("Cant find quiz to delete", e);
         }
     }
 
