@@ -36,5 +36,6 @@ public class QuestionService {
         return "Succesvol";
     }
     public void DeleteQuestion(long questionId) {
+        questionRepository.deleteById(questionId);
     }
 }
