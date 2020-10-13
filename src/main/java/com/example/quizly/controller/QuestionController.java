@@ -62,7 +62,7 @@ public class QuestionController {
     @DeleteMapping(path = "/{QuestionId}")
     public void DeleteQuiz(@PathVariable long QuestionId)throws Exception{
         try {
-            questionService.DeleteQuiz(QuestionId);
+            questionService.DeleteQuestion(QuestionId);
         } catch (Exception e) {
             throw new Exception("Cant find question to delete", e);
         }
