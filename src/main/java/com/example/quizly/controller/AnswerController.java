@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("answer")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AnswerController {
     private final AnswerService answerService;
 

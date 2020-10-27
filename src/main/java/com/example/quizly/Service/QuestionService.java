@@ -2,6 +2,7 @@ package com.example.quizly.Service;
 
 import com.example.quizly.accessingData.Question;
 import com.example.quizly.accessingData.QuestionRepository;
+import com.example.quizly.accessingData.Quiz;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +20,10 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
-    public String AddQuestion(Question question) {
+    public String AddQuestion(Question question, Quiz quiz) {
         questionRepository.save(question);
-        return "Succesvol";
+        quiz.getQuestions().add(question);
+        return "Saved";
     }
 
     public String UpdateQuestion(Question question) {

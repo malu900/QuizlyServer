@@ -1,23 +1,27 @@
 package com.example.quizly.controller;
 
+import com.example.quizly.Service.AuthService;
 import com.example.quizly.Service.QuizService;
+import com.example.quizly.Service.UserService;
 import com.example.quizly.accessingData.Quiz;
+import com.example.quizly.accessingData.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-@RestController
 
-@RequestMapping("Beverages")
+@RestController
+@RequestMapping("quiz")
 @CrossOrigin(origins = "http://localhost:3000")
 public class QuizController {
     private final QuizService quizService;
+    private final UserService userService;
 
     @Autowired
-    public QuizController(QuizService quizService) {
+    public QuizController(QuizService quizService, UserService userService) {
         this.quizService = quizService;
+        this.userService = userService;
     }
 
     @GetMapping(path="/")
@@ -34,13 +38,15 @@ public class QuizController {
         return new ResponseEntity<>(quizzes, HttpStatus.OK);
     }
 
-    @PostMapping(path="/") // Map ONLY POST Requests
+    @PostMapping(path="/{userId}") // Map ONLY POST Requests
     public @ResponseBody
-    String addNewQuiz (@RequestBody Quiz quiz)throws Exception{
+    String addNewQuiz (@RequestBody Quiz quiz, @PathVariable long userId)throws Exception{
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         try {
-            quizService.AddQuiz(quiz);
+            User user = userService.findById(userId);
+            quiz.setUser(user);
+            quizService.AddQuiz(quiz, user);
             return "Saved";
         } catch (Exception e) {
             throw new Exception("Cant find quiz to delete", e);

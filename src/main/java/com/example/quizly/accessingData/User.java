@@ -1,18 +1,23 @@
 package com.example.quizly.accessingData;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     private String name;
     private String email;
     private String password;
+    @JsonManagedReference("quizzes")
+    @OneToMany(mappedBy = "user")
+    private List<Quiz>quizzes;
 
     public Long getUserId() {
         return userId;
@@ -44,5 +49,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
     }
 }

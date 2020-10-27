@@ -1,9 +1,9 @@
 package com.example.quizly.accessingData;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -18,6 +18,7 @@ public class Quiz {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long quizId;
 
     public List<Question> getQuestions() {
@@ -36,8 +37,21 @@ public class Quiz {
         this.quizName = quizName;
     }
 
-    @OneToMany
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    @JsonManagedReference("questions")
+    @OneToMany(mappedBy = "quiz")
     private List<Question> questions;
 
     private String quizName;
+
+    @JsonBackReference("user")
+    @ManyToOne
+    private User user;
+
 }

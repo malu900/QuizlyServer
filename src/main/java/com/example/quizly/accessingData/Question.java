@@ -1,5 +1,8 @@
 package com.example.quizly.accessingData;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,9 +13,13 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long questionId;
 
-    @OneToMany//(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "questionId", nullable = false)
+    @JsonManagedReference("answers")
+    @OneToMany(mappedBy = "question")
     private List<Answer> answers;
+
+    @JsonBackReference("quiz")
+    @ManyToOne
+    private Quiz quiz;
 
     private String questionName;
 
@@ -38,5 +45,13 @@ public class Question {
 
     public void setQuestionName(String questionName) {
         this.questionName = questionName;
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
     }
 }

@@ -10,13 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("question")
+@CrossOrigin(origins = "http://localhost:3000")
 public class QuestionController {
     private final QuestionService questionService;
+    private final QuizService quizService;
 
     @Autowired
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, QuizService quizService) {
         this.questionService = questionService;
+        this.quizService = quizService;
     }
 
     @GetMapping(path="/")
@@ -33,13 +37,15 @@ public class QuestionController {
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
 
-    @PostMapping(path="/") // Map ONLY POST Requests
+    @PostMapping(path="/{id}") // Map ONLY POST Requests
     public @ResponseBody
-    String addNewQuestion (@RequestBody Question question)throws Exception{
+    String addNewQuestion (@RequestBody Question question, @PathVariable long id)throws Exception{
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         try {
-            questionService.AddQuestion(question);
+            Quiz quiz = quizService.findById(id);
+            question.setQuiz(quiz);
+            questionService.AddQuestion(question, quiz);
             return "Saved";
         } catch (Exception e) {
             throw new Exception("Cant find question to delete", e);

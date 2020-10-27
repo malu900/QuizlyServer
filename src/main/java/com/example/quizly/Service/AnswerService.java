@@ -4,10 +4,12 @@ import com.example.quizly.accessingData.Answer;
 import com.example.quizly.accessingData.AnswerRepository;
 import com.example.quizly.accessingData.Question;
 import com.example.quizly.accessingData.QuestionRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AnswerService {
     private final AnswerRepository answerRepository;
 
