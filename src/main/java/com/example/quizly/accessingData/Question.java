@@ -1,6 +1,7 @@
 package com.example.quizly.accessingData;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -13,12 +14,13 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long questionId;
 
-    @JsonManagedReference("answers")
-    @OneToMany(mappedBy = "question")
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "question_id", insertable = false, updatable = false)
     private List<Answer> answers;
 
-    @JsonBackReference("quiz")
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
     private String questionName;

@@ -1,6 +1,7 @@
 package com.example.quizly.accessingData;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -44,14 +45,16 @@ public class Quiz {
     public void setUser(User user) {
         this.user = user;
     }
-    @JsonManagedReference("questions")
-    @OneToMany(mappedBy = "quiz")
+    
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Question> questions;
 
     private String quizName;
 
-    @JsonBackReference("user")
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     private User user;
 
 }

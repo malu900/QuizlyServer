@@ -15,8 +15,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    @JsonManagedReference("quizzes")
-    @OneToMany(mappedBy = "user")
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private List<Quiz>quizzes;
 
     public Long getUserId() {

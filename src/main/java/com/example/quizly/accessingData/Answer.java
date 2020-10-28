@@ -1,6 +1,7 @@
 package com.example.quizly.accessingData;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -13,8 +14,9 @@ public class Answer {
 
     private String answer;
 
-    @JsonBackReference("question")
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "question_id")
     private Question question;
 
     public Long getAnswerId() {
