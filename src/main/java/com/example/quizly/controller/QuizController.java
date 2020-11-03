@@ -8,6 +8,8 @@ import com.example.quizly.accessingData.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -24,7 +26,8 @@ public class QuizController {
         this.userService = userService;
     }
 
-    @GetMapping(path="/")
+    @MessageMapping("/getAll")
+    @SendTo("/topic/quizes")
     public ResponseEntity<List<Quiz>> GetAllQuiz() {
         List<Quiz> quizzes =quizService.GetAllQuiz();
         if (quizzes== null)
