@@ -1,13 +1,12 @@
 package com.example.quizly.accessingData;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="guests")
 public class Guest {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long guestId;
 
     private String name;

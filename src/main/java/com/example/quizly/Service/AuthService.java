@@ -45,6 +45,7 @@ public class AuthService implements AuthServiceInt{
         return null;
     }
 
+    @Override
     public String registerGuest(GuestModel guest) {
         Guest newGuest = new Guest();
         newGuest.setName(guest.getName());
