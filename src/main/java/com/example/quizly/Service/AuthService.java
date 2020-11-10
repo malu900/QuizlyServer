@@ -1,8 +1,11 @@
 package com.example.quizly.Service;
 
+import com.example.quizly.Models.request.Authentication.GuestModel;
 import com.example.quizly.Models.request.Authentication.LoginModel;
 import com.example.quizly.Models.request.Authentication.RegisterModel;
 import com.example.quizly.Models.response.Authentication.LoginResponse;
+import com.example.quizly.accessingData.Guest;
+import com.example.quizly.accessingData.GuestRepository;
 import com.example.quizly.accessingData.User;
 import com.example.quizly.accessingData.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,10 @@ import java.util.List;
 public class AuthService implements AuthServiceInt{
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GuestRepository guestRepository;
+
     @Override
     public String register(RegisterModel user) {
         User newUser = new User();
@@ -36,5 +43,13 @@ public class AuthService implements AuthServiceInt{
             }
         }
         return null;
+    }
+
+    public String registerGuest(GuestModel guest) {
+        Guest newGuest = new Guest();
+        newGuest.setName(guest.getName());
+        newGuest.setCode(guest.getCode());
+        guestRepository.save(newGuest);
+        return "SuccesFull";
     }
 }

@@ -48,7 +48,7 @@ public class QuestionController {
             questionService.AddQuestion(question, quiz);
             return "Saved";
         } catch (Exception e) {
-            throw new Exception("Cant find question to delete", e);
+            throw new Exception("Can't add question", e);
         }
     }
 
