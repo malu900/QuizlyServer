@@ -9,6 +9,8 @@ import com.example.quizly.accessingData.GuestRepository;
 import com.example.quizly.accessingData.User;
 import com.example.quizly.accessingData.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,24 +25,23 @@ public class AuthService implements AuthServiceInt{
 
     @Override
     public String register(RegisterModel user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User newUser = new User();
         newUser.setName(user.getName());
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(encoder.encode(user.getPassword()));
             userRepository.save(newUser);
             return "SuccesFull";
     }
 
     @Override
     public LoginResponse login(LoginModel user) {
-        List<User> users = userRepository.findAll();
+        User user1 = userRepository.findByName(user.getName());
         LoginResponse returnValue = new LoginResponse();
-        for (User user1 : users) {
-            if(user1.getName().equals(user.getName()) && user1.getPassword().equals(user.getPassword())){
-                returnValue.setUserId(user1.getUserId());
-                returnValue.setName(user1.getName());
-                return returnValue;
-            }
+        if(user1.getName().equals(user.getName()) && BCrypt.checkpw(user.getPassword(), user1.getPassword())){
+            returnValue.setUserId(user1.getUserId());
+            returnValue.setName(user1.getName());
+            return returnValue;
         }
         return null;
     }
