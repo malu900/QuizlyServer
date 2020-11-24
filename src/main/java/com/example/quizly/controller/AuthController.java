@@ -1,5 +1,6 @@
 package com.example.quizly.controller;
 
+import com.example.quizly.Models.request.Authentication.GuestModel;
 import com.example.quizly.Models.request.Authentication.LoginModel;
 import com.example.quizly.Models.request.Authentication.RegisterModel;
 import com.example.quizly.Models.response.Authentication.LoginResponse;
@@ -29,6 +30,15 @@ public class AuthController {
         LoginResponse returnValue = authService.login(user);
         return returnValue;
 
+    }
+    @RequestMapping(value = "/guest", method = RequestMethod.POST)
+    public String registerGuest(@RequestBody GuestModel guest) throws Exception {
+        try {
+            authService.registerGuest(guest);
+            return "Successfully added guest";
+        } catch (Exception e) {
+            throw new Exception("Can't add guest", e);
+        }
     }
 }
 
