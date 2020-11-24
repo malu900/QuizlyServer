@@ -1,8 +1,10 @@
 package com.example.quizly.controller;
 
 import com.example.quizly.Service.AuthService;
+import com.example.quizly.Service.QuestionService;
 import com.example.quizly.Service.QuizService;
 import com.example.quizly.Service.UserService;
+import com.example.quizly.accessingData.Question;
 import com.example.quizly.accessingData.Quiz;
 import com.example.quizly.accessingData.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,13 @@ import java.util.List;
 public class QuizController {
     private final QuizService quizService;
     private final UserService userService;
+    private final QuestionService questionService;
 
     @Autowired
-    public QuizController(QuizService quizService, UserService userService) {
+    public QuizController(QuizService quizService, UserService userService, QuestionService questionService) {
         this.quizService = quizService;
         this.userService = userService;
+        this.questionService = questionService;
     }
 
     @MessageMapping("/getAll")
@@ -50,6 +54,11 @@ public class QuizController {
             User user = userService.findById(userId);
             quiz.setUser(user);
             quizService.AddQuiz(quiz, user);
+            if(quiz.getQuestions()!= null && quiz.getQuestions().size() < 1){
+                for (Question question: quiz.getQuestions()) {
+                    questionService.AddQuestion(question,null);
+                }
+            }
             return "Saved";
         } catch (Exception e) {
             throw new Exception("Cant find quiz to delete", e);

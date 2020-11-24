@@ -36,9 +36,9 @@ public class AuthService implements AuthServiceInt{
 
     @Override
     public LoginResponse login(LoginModel user) {
-        User user1 = userRepository.findByName(user.getName());
+        User user1 = userRepository.findByEmail(user.getEmail());
         LoginResponse returnValue = new LoginResponse();
-        if(user1.getName().equals(user.getName()) && BCrypt.checkpw(user.getPassword(), user1.getPassword())){
+        if(user1.getEmail().equals(user.getEmail()) && BCrypt.checkpw(user.getPassword(), user1.getPassword())){
             returnValue.setUserId(user1.getUserId());
             returnValue.setName(user1.getName());
             return returnValue;

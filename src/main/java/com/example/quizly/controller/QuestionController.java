@@ -1,12 +1,17 @@
 package com.example.quizly.controller;
 
+import com.example.quizly.Service.AnswerService;
 import com.example.quizly.Service.QuestionService;
 import com.example.quizly.Service.QuizService;
+import com.example.quizly.accessingData.Answer;
 import com.example.quizly.accessingData.Question;
 import com.example.quizly.accessingData.Quiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +21,13 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final QuizService quizService;
+    private final AnswerService answerService;
 
     @Autowired
-    public QuestionController(QuestionService questionService, QuizService quizService) {
+    public QuestionController(QuestionService questionService, QuizService quizService, AnswerService answerService) {
         this.questionService = questionService;
         this.quizService = quizService;
+        this.answerService = answerService;
     }
 
     @GetMapping(path="/")
@@ -46,6 +53,11 @@ public class QuestionController {
             Quiz quiz = quizService.findById(id);
             question.setQuiz(quiz);
             questionService.AddQuestion(question, quiz);
+            if(question.getAnswers() != null && question.getAnswers().size()>1){
+                for (Answer answer:question.getAnswers()) {
+                    answerService.AddAnswer(answer);
+                }
+            }
             return "Saved";
         } catch (Exception e) {
             throw new Exception("Can't add question", e);
@@ -71,6 +83,16 @@ public class QuestionController {
             questionService.DeleteQuestion(QuestionId);
         } catch (Exception e) {
             throw new Exception("Cant find question to delete", e);
+        }
+    }
+    
+    @GetMapping("/{QuizId}/{RoundNumber}")
+    public ResponseEntity<Question>getCurrentQuestion(@PathVariable long QuizId, @PathVariable int RoundNumber) throws Exception {
+        try{
+            Question question = questionService.getCurrentQuestion(QuizId, RoundNumber);
+            return new ResponseEntity<>(question, HttpStatus.OK);
+        }catch (Exception e){
+            throw new Exception("Can't find question", e);
         }
     }
 }
