@@ -32,7 +32,7 @@ public class QuestionController {
 
     @GetMapping(path="/")
     public ResponseEntity<List<Question>> GetAllQuestions() {
-        List<Question> questions =questionService.GetAllQuestions();
+        List<Question> questions = questionService.GetAllQuestions();
         if (questions== null)
         {
             try {

@@ -31,9 +31,9 @@ public class QuizController {
     }
 
     @MessageMapping("/getAll")
-    @SendTo("/topic/quizes")
+    @SendTo("/quizes")
     public ResponseEntity<List<Quiz>> GetAllQuiz() {
-        List<Quiz> quizzes =quizService.GetAllQuiz();
+        List<Quiz> quizzes = quizService.GetAllQuiz();
         if (quizzes== null)
         {
             try {
