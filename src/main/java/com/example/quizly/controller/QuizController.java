@@ -30,8 +30,9 @@ public class QuizController {
         this.questionService = questionService;
     }
 
-    @MessageMapping("/getAll")
-    @SendTo("/topic/quizes")
+//    @MessageMapping("/getAll")
+//    @SendTo("/topic/quizes")
+    @GetMapping(path = "/getAll")
     public ResponseEntity<List<Quiz>> GetAllQuiz() {
         List<Quiz> quizzes =quizService.GetAllQuiz();
         if (quizzes== null)
