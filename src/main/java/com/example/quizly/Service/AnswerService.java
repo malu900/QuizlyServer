@@ -22,8 +22,11 @@ public class AnswerService {
         return answerRepository.findAll();
     }
 
-    public String AddAnswer(Answer answer) {
+    public String AddAnswer(Answer answer, Question question) {
         answerRepository.save(answer);
+        if(question!= null){
+            question.getAnswers().add(answer);
+        }
         return "Succesvol";
     }
 

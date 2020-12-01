@@ -16,10 +16,11 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class AnswerController {
     private final AnswerService answerService;
-
+    private final QuestionService questionService;
     @Autowired
-    public AnswerController(AnswerService answerService) {
+    public AnswerController(AnswerService answerService, QuestionService questionService) {
         this.answerService = answerService;
+        this.questionService = questionService;
     }
 
     @GetMapping(path="/")
@@ -36,13 +37,15 @@ public class AnswerController {
         return new ResponseEntity<>(answers, HttpStatus.OK);
     }
 
-    @PostMapping(path="/") // Map ONLY POST Requests
+    @PostMapping(path="/{id}") // Map ONLY POST Requests
     public @ResponseBody
-    String addNewAnswer (@RequestBody Answer answer)throws Exception{
+    String addNewAnswer (@RequestBody Answer answer, @PathVariable long id)throws Exception{
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         try {
-            answerService.AddAnswer(answer);
+            Question question = questionService.findById(id);
+            answer.setQuestion(question);
+            answerService.AddAnswer(answer, question);
             return "Saved";
         } catch (Exception e) {
             throw new Exception("Cant find answer to delete", e);

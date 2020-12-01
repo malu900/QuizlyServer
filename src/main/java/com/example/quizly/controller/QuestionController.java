@@ -55,7 +55,7 @@ public class QuestionController {
             questionService.AddQuestion(question, quiz);
             if(question.getAnswers() != null && question.getAnswers().size()>1){
                 for (Answer answer:question.getAnswers()) {
-                    answerService.AddAnswer(answer);
+                    answerService.AddAnswer(answer, question);
                 }
             }
             return "Saved";

@@ -48,4 +48,9 @@ public class QuestionService {
         Quiz quiz = quizService.findById(quizId);
         return quiz.getQuestions().get(roundNumber-1);
     }
+
+    public Question findById(long id) {
+        Optional<Question> question = questionRepository.findById(id);
+        return question.get();
+    }
 }
