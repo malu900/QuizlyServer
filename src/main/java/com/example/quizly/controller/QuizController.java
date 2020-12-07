@@ -30,22 +30,6 @@ public class QuizController {
         this.questionService = questionService;
     }
 
-//    @MessageMapping("/getAll")
-//    @SendTo("/topic/quizes")
-    @GetMapping(path = "/getAll")
-    public ResponseEntity<List<Quiz>> GetAllQuiz() {
-        List<Quiz> quizzes =quizService.GetAllQuiz();
-        if (quizzes== null)
-        {
-            try {
-                throw new Exception("No quiz found : " + quizzes);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return new ResponseEntity<>(quizzes, HttpStatus.OK);
-    }
-
     @PostMapping(path="/{userId}") // Map ONLY POST Requests
     public @ResponseBody
     String addNewQuiz (@RequestBody Quiz quiz, @PathVariable long userId)throws Exception{
