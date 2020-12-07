@@ -46,7 +46,7 @@ public class Quiz {
         this.user = user;
     }
     
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Question> questions;
 
