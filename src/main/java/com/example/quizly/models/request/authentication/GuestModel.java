@@ -1,4 +1,4 @@
-package com.example.quizly.Models.request.Authentication;
+package com.example.quizly.models.request.authentication;
 
 public class GuestModel {
     private String name;

@@ -1,10 +1,10 @@
 package com.example.quizly.controller;
 
-import com.example.quizly.Models.request.Authentication.GuestModel;
-import com.example.quizly.Models.request.Authentication.LoginModel;
-import com.example.quizly.Models.request.Authentication.RegisterModel;
-import com.example.quizly.Models.response.Authentication.LoginResponse;
-import com.example.quizly.Service.AuthService;
+import com.example.quizly.models.request.authentication.GuestModel;
+import com.example.quizly.models.request.authentication.LoginModel;
+import com.example.quizly.models.request.authentication.RegisterModel;
+import com.example.quizly.models.response.Authentication.LoginResponse;
+import com.example.quizly.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

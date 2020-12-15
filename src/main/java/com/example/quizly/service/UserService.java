@@ -1,9 +1,7 @@
-package com.example.quizly.Service;
+package com.example.quizly.service;
 
-import com.example.quizly.accessingData.Quiz;
-import com.example.quizly.accessingData.QuizRepository;
-import com.example.quizly.accessingData.User;
-import com.example.quizly.accessingData.UserRepository;
+import com.example.quizly.accesssingdata.User;
+import com.example.quizly.accesssingdata.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,6 +17,6 @@ public class UserService {
 
     public User findById(long id){
         Optional<User> user = userRepository.findById(id);
-        return user.get();
+        return user.orElseGet(User::new);
     }
 }

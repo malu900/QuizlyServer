@@ -1,9 +1,10 @@
 package com.example.quizly.controller;
 
-import com.example.quizly.Service.AnswerService;
-import com.example.quizly.Service.QuestionService;
-import com.example.quizly.accessingData.Answer;
-import com.example.quizly.accessingData.Question;
+import com.example.quizly.service.AnswerService;
+import com.example.quizly.service.QuestionService;
+import com.example.quizly.accesssingdata.Answer;
+import com.example.quizly.accesssingdata.Question;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ public class AnswerController {
     }
 
     @GetMapping(path="/")
-    public ResponseEntity<List<Answer>> GetAllAnswers() {
-        List<Answer> answers =answerService.GetAllAnswers();
+    public ResponseEntity<List<Answer>> getAllAnswers() {
+        List<Answer> answers =answerService.getAllAnswers();
         if (answers== null)
         {
             try {
@@ -45,7 +46,7 @@ public class AnswerController {
         try {
             Question question = questionService.findById(id);
             answer.setQuestion(question);
-            answerService.AddAnswer(answer, question);
+            answerService.addAnswer(answer, question);
             return "Saved";
         } catch (Exception e) {
             throw new Exception("Cant find answer to delete", e);
@@ -53,12 +54,12 @@ public class AnswerController {
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<String >UpdateAnswer(@RequestBody Answer answer) {
-        String updateAnswer= answerService.UpdateAnswer(answer);
+    public ResponseEntity<String> updateAnswer(@RequestBody Answer answer) {
+        String updateAnswer= answerService.updateAnswer(answer);
         if (updateAnswer== null)
         {
             try {
-                throw new Exception("No answer found to update: " + updateAnswer);
+                throw new NotFoundException("No answer found to update: " + updateAnswer);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,11 +67,11 @@ public class AnswerController {
         return new ResponseEntity<>(updateAnswer, HttpStatus.OK);
     }
     @DeleteMapping(path = "{answerId}")
-    public void DeleteAnswer(@PathVariable long answerId)throws Exception{
+    public void deleteAnswer(@PathVariable long answerId)throws NotFoundException{
         try {
-            answerService.DeleteAnswer(answerId);
+            answerService.deleteAnswer(answerId);
         } catch (Exception e) {
-            throw new Exception("Cant find answer to delete", e);
+            throw new NotFoundException("Cant find answer to delete", e);
         }
     }
 }

@@ -1,15 +1,12 @@
 package com.example.quizly.controller;
 
-import com.example.quizly.Service.QuizService;
-import com.example.quizly.accessingData.Quiz;
+import com.example.quizly.service.QuizService;
+import com.example.quizly.accesssingdata.Quiz;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -27,8 +24,8 @@ private final QuizService quizService;
 
     @MessageMapping("/getAll")
     @SendTo("/topic/quizzes")
-    public String GetAllQuiz() throws JsonProcessingException {
-        List<Quiz> quizzes =quizService.GetAllQuiz();
+    public String getAllQuiz() throws JsonProcessingException {
+        List<Quiz> quizzes =quizService.getAllQuiz();
         if (quizzes== null)
         {
             try {

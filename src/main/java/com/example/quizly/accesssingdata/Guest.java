@@ -1,4 +1,4 @@
-package com.example.quizly.accessingData;
+package com.example.quizly.accesssingdata;
 
 import javax.persistence.*;
 

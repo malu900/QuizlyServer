@@ -1,17 +1,14 @@
 package com.example.quizly.controller;
 
-import com.example.quizly.Service.AnswerService;
-import com.example.quizly.Service.QuestionService;
-import com.example.quizly.Service.QuizService;
-import com.example.quizly.accessingData.Answer;
-import com.example.quizly.accessingData.Question;
-import com.example.quizly.accessingData.Quiz;
+import com.example.quizly.service.AnswerService;
+import com.example.quizly.service.QuestionService;
+import com.example.quizly.service.QuizService;
+import com.example.quizly.accesssingdata.Answer;
+import com.example.quizly.accesssingdata.Question;
+import com.example.quizly.accesssingdata.Quiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +28,8 @@ public class QuestionController {
     }
 
     @GetMapping(path="/")
-    public ResponseEntity<List<Question>> GetAllQuestions() {
-        List<Question> questions =questionService.GetAllQuestions();
+    public ResponseEntity<List<Question>> getAllQuestions() {
+        List<Question> questions =questionService.getAllQuestions();
         if (questions== null)
         {
             try {
@@ -52,10 +49,10 @@ public class QuestionController {
         try {
             Quiz quiz = quizService.findById(id);
             question.setQuiz(quiz);
-            questionService.AddQuestion(question, quiz);
+            questionService.addQuestion(question, quiz);
             if(question.getAnswers() != null && question.getAnswers().size()>1){
                 for (Answer answer:question.getAnswers()) {
-                    answerService.AddAnswer(answer, question);
+                    answerService.addAnswer(answer, question);
                 }
             }
             return "Saved";
@@ -65,8 +62,8 @@ public class QuestionController {
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<String >UpdateQuiz(@RequestBody Question question) {
-        String updateQuestion= questionService.UpdateQuestion(question);
+    public ResponseEntity<String > updateQuiz(@RequestBody Question question) {
+        String updateQuestion= questionService.updateQuestion(question);
         if (updateQuestion== null)
         {
             try {
@@ -78,9 +75,9 @@ public class QuestionController {
         return new ResponseEntity<>(updateQuestion, HttpStatus.OK);
     }
     @DeleteMapping(path = "/{QuestionId}")
-    public void DeleteQuiz(@PathVariable long QuestionId)throws Exception{
+    public void deleteQuiz(@PathVariable long QuestionId)throws Exception{
         try {
-            questionService.DeleteQuestion(QuestionId);
+            questionService.deleteQuestion(QuestionId);
         } catch (Exception e) {
             throw new Exception("Cant find question to delete", e);
         }

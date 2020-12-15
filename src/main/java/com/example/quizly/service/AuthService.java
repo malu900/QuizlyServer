@@ -1,19 +1,17 @@
-package com.example.quizly.Service;
+package com.example.quizly.service;
 
-import com.example.quizly.Models.request.Authentication.GuestModel;
-import com.example.quizly.Models.request.Authentication.LoginModel;
-import com.example.quizly.Models.request.Authentication.RegisterModel;
-import com.example.quizly.Models.response.Authentication.LoginResponse;
-import com.example.quizly.accessingData.Guest;
-import com.example.quizly.accessingData.GuestRepository;
-import com.example.quizly.accessingData.User;
-import com.example.quizly.accessingData.UserRepository;
+import com.example.quizly.models.request.authentication.GuestModel;
+import com.example.quizly.models.request.authentication.LoginModel;
+import com.example.quizly.models.request.authentication.RegisterModel;
+import com.example.quizly.models.response.Authentication.LoginResponse;
+import com.example.quizly.accesssingdata.Guest;
+import com.example.quizly.accesssingdata.GuestRepository;
+import com.example.quizly.accesssingdata.User;
+import com.example.quizly.accesssingdata.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AuthService implements AuthServiceInt{

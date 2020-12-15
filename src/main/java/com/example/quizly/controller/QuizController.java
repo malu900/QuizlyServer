@@ -1,19 +1,15 @@
 package com.example.quizly.controller;
 
-import com.example.quizly.Service.AuthService;
-import com.example.quizly.Service.QuestionService;
-import com.example.quizly.Service.QuizService;
-import com.example.quizly.Service.UserService;
-import com.example.quizly.accessingData.Question;
-import com.example.quizly.accessingData.Quiz;
-import com.example.quizly.accessingData.User;
+import com.example.quizly.service.QuestionService;
+import com.example.quizly.service.QuizService;
+import com.example.quizly.service.UserService;
+import com.example.quizly.accesssingdata.Question;
+import com.example.quizly.accesssingdata.Quiz;
+import com.example.quizly.accesssingdata.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("quiz")
@@ -38,10 +34,10 @@ public class QuizController {
         try {
             User user = userService.findById(userId);
             quiz.setUser(user);
-            quizService.AddQuiz(quiz, user);
+            quizService.addQuiz(quiz, user);
             if(quiz.getQuestions()!= null && quiz.getQuestions().size() < 1){
                 for (Question question: quiz.getQuestions()) {
-                    questionService.AddQuestion(question,null);
+                    questionService.addQuestion(question,null);
                 }
             }
             return "Saved";
@@ -51,8 +47,8 @@ public class QuizController {
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<String >UpdateQuiz(@RequestBody Quiz quiz) {
-        String updateQuiz= quizService.UpdateQuiz(quiz);
+    public ResponseEntity<String > updateQuiz(@RequestBody Quiz quiz) {
+        String updateQuiz= quizService.updateQuiz(quiz);
         if (updateQuiz== null)
         {
             try {
@@ -64,9 +60,9 @@ public class QuizController {
         return new ResponseEntity<>(updateQuiz, HttpStatus.OK);
     }
     @DeleteMapping(path = "/{QuizId}")
-    public void DeleteQuiz(@PathVariable long QuizId)throws Exception{
+    public void deleteQuiz(@PathVariable long QuizId)throws Exception{
         try {
-            quizService.DeleteQuiz(QuizId);
+            quizService.deleteQuiz(QuizId);
         } catch (Exception e) {
             throw new Exception("Cant find quiz to delete", e);
         }

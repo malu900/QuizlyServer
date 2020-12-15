@@ -1,6 +1,5 @@
-package com.example.quizly.accessingData;
+package com.example.quizly.accesssingdata;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
 
-    private String answer;
+    private String answerContent;
 
     @JsonIgnore
     @ManyToOne()
@@ -27,12 +26,12 @@ public class Answer {
         this.answerId = answerId;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getAnswerContent() {
+        return answerContent;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAnswerContent(String answer) {
+        this.answerContent = answer;
     }
 
     public Question getQuestion() {

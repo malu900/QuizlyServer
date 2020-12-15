@@ -1,4 +1,4 @@
-package com.example.quizly.accessingData;
+package com.example.quizly.accesssingdata;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

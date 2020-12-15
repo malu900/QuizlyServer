@@ -1,8 +1,8 @@
-package com.example.quizly.Service;
+package com.example.quizly.service;
 
-import com.example.quizly.accessingData.Question;
-import com.example.quizly.accessingData.QuestionRepository;
-import com.example.quizly.accessingData.Quiz;
+import com.example.quizly.accesssingdata.Question;
+import com.example.quizly.accesssingdata.QuestionRepository;
+import com.example.quizly.accesssingdata.Quiz;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +17,11 @@ public class QuestionService {
         this.quizService = quizService;
     }
 
-    public List<Question> GetAllQuestions(){
+    public List<Question> getAllQuestions(){
         return questionRepository.findAll();
     }
 
-    public String AddQuestion(Question question, Quiz quiz) {
+    public String addQuestion(Question question, Quiz quiz) {
         questionRepository.save(question);
         if(quiz!= null){
             quiz.getQuestions().add(question);
@@ -29,18 +29,23 @@ public class QuestionService {
         return "Saved";
     }
 
-    public String UpdateQuestion(Question question) {
+    public String updateQuestion(Question question) {
         Optional<Question> questionFromDb = questionRepository.findById(question.getQuestionId());
-        Question newQuestion = questionFromDb.get();
-        newQuestion.setAnswers(question.getAnswers());
-        newQuestion.setQuestionName(question.getQuestionName());
-        newQuestion = questionRepository.save(newQuestion);
-        newQuestion.setQuestionName(question.getQuestionName());
-        newQuestion.setAnswers(question.getAnswers());
+        if(questionFromDb.isPresent()){
+            Question newQuestion = questionFromDb.get();
 
-        return "Succesvol";
+            newQuestion.setAnswers(question.getAnswers());
+            newQuestion.setQuestionName(question.getQuestionName());
+            newQuestion = questionRepository.save(newQuestion);
+            newQuestion.setQuestionName(question.getQuestionName());
+            newQuestion.setAnswers(question.getAnswers());
+
+            return "Succesvol";
+        }
+        return "Failed in updateQuestion(): questionFromDb is not Present";
     }
-    public void DeleteQuestion(long questionId) {
+
+    public void deleteQuestion(long questionId) {
         questionRepository.deleteById(questionId);
     }
 
@@ -51,6 +56,6 @@ public class QuestionService {
 
     public Question findById(long id) {
         Optional<Question> question = questionRepository.findById(id);
-        return question.get();
+        return question.orElseGet(Question::new);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.quizly.Models.response.Authentication;
+package com.example.quizly.models.response.Authentication;
 
 public class LoginResponse {
     private long userId;

@@ -1,8 +1,8 @@
-package com.example.quizly.accessingData;
+package com.example.quizly.accesssingdata;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface QuizRepository extends JpaRepository<Quiz, Long> {
+public interface GuestRepository extends JpaRepository<Guest, Long> {
 }

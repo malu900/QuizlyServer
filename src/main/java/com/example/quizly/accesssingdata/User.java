@@ -1,6 +1,4 @@
-package com.example.quizly.accessingData;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+package com.example.quizly.accesssingdata;
 
 import javax.persistence.*;
 import java.util.List;
