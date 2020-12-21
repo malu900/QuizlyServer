@@ -3,6 +3,7 @@ package com.example.quizly.accesssingdata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.swing.text.AbstractDocument;
 
 @Entity
 @Table(name="answers")
@@ -17,6 +18,12 @@ public class Answer {
     @ManyToOne()
     @JoinColumn(name = "question_id")
     private Question question;
+
+    public Answer(long answerId, String answerContent, Question question){
+        this.answerId = answerId;
+        this.answerContent = answerContent;
+        this.question = question;
+    }
 
     public Long getAnswerId() {
         return answerId;

@@ -1,5 +1,7 @@
 package com.example.quizly.accesssingdata;
 
+import org.yaml.snakeyaml.emitter.Emitable;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,6 +18,18 @@ public class User {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private List<Quiz>quizzes;
+
+    public User(long userId, String name, String email, String password, List<Quiz> quizzes){
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.quizzes = quizzes;
+    }
+
+    public User() {
+
+    }
 
     public Long getUserId() {
         return userId;

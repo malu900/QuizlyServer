@@ -21,6 +21,10 @@ public class AuthService implements AuthServiceInt{
     @Autowired
     private GuestRepository guestRepository;
 
+    public AuthService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
     @Override
     public String register(RegisterModel user) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

@@ -23,6 +23,17 @@ public class Question {
 
     private String questionName;
 
+    public Question(long questionId, List<Answer> answers,  Quiz quiz, String questionName){
+        this.questionId = questionId;
+        this.answers = answers;
+        this.quiz = quiz;
+        this.questionName = questionName;
+    }
+
+    public Question() {
+
+    }
+
     public long getQuestionId() {
         return questionId;
     }

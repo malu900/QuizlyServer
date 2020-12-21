@@ -33,7 +33,7 @@ public class QuizService {
 
             newQuiz.setQuizName(quiz.getQuizName());
             newQuiz.setQuestions(quiz.getQuestions());
-            newQuiz = quizRepository.save(newQuiz);
+            quizRepository.save(newQuiz);
             return "Succesvol";
         }else{
             return "Failed in updateQuiz(): quizFromDb is not Present";
@@ -47,5 +47,8 @@ public class QuizService {
     public Quiz findById(long id) {
         Optional<Quiz> quiz = quizRepository.findById(id);
         return quiz.orElseGet(Quiz::new);
+    }
+
+    public void addQuiz(Quiz quiz) {
     }
 }
