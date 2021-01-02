@@ -3,7 +3,9 @@ package com.example.quizly.service;
 import com.example.quizly.accesssingdata.Quiz;
 import com.example.quizly.accesssingdata.QuizRepository;
 import com.example.quizly.accesssingdata.User;
+import com.example.quizly.accesssingdata.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +13,11 @@ import java.util.Optional;
 @Service
 public class QuizService {
     private final QuizRepository quizRepository;
+    private final UserRepository userRepository;
 
-    public QuizService(QuizRepository quizRepository) {
+    public QuizService(QuizRepository quizRepository, UserRepository userRepository) {
         this.quizRepository = quizRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Quiz> getAllQuiz(){
@@ -50,5 +54,31 @@ public class QuizService {
     }
 
     public void addQuiz(Quiz quiz) {
+    }
+
+    @Transactional
+    public List<User> JoinQuiz(long id, long userId) {
+        Quiz retrievedQuiz = findById(id);
+        User user = userRepository.findById(userId).get();
+        List<Quiz> quizzes = user.getQuizzes();
+        quizzes.add(retrievedQuiz);
+        user.setQuizzes(quizzes);
+        userRepository.save(user);
+        retrievedQuiz.getParticipants().add(user);
+        quizRepository.save(retrievedQuiz);
+        return retrievedQuiz.getParticipants();
+    }
+
+    @Transactional
+    public List<User> LeaveQuiz(long id, long userId) {
+        Quiz retrievedQuiz = findById(id);
+        User user = userRepository.findById(userId).get();
+        List<Quiz> quizzes = user.getQuizzes();
+        quizzes.remove(retrievedQuiz);
+        user.setQuizzes(quizzes);
+        userRepository.save(user);
+        retrievedQuiz.getParticipants().remove(user);
+        quizRepository.save(retrievedQuiz);
+        return retrievedQuiz.getParticipants();
     }
 }

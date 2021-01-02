@@ -1,11 +1,19 @@
 package com.example.quizly.controller;
 
+import com.example.quizly.accesssingdata.User;
+import com.example.quizly.models.WsMethod;
+import com.example.quizly.models.WsResponse;
 import com.example.quizly.service.QuizService;
 import com.example.quizly.accesssingdata.Quiz;
+import com.example.quizly.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
@@ -16,7 +24,7 @@ public class SocketController {
 private final QuizService quizService;
 
     @Autowired
-    public SocketController (QuizService quizService){
+    public SocketController (QuizService quizService, UserService userService){
         this.quizService = quizService;
     }
 
@@ -37,4 +45,39 @@ private final QuizService quizService;
         String json = objectMapper.writeValueAsString(quizzes);
         return json;
     }
+
+    @MessageMapping("/leave/{id}")
+    @SendTo("/topic/quizzes/{id}")
+    public ResponseEntity<WsResponse> leaveGame(@Payload long userId, @DestinationVariable long id) throws JsonProcessingException {
+        try{
+            List<User>users = quizService.LeaveQuiz(id, userId);
+            String json = objectMapper.writeValueAsString(users);
+            WsResponse response = new WsResponse(json, WsMethod.LEAVE);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            String json = objectMapper.writeValueAsString("Couldn't leave the quiz");
+            WsResponse response = new WsResponse(json, WsMethod.LEAVE);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @MessageMapping("/join/{id}")
+    @SendTo("/topic/quizzes/{id}")
+    public ResponseEntity<WsResponse> joinGame(@Payload long userId, @DestinationVariable long id) throws JsonProcessingException {
+        try {
+            List<User>users = quizService.JoinQuiz(id, userId);
+            String json = objectMapper.writeValueAsString(users);
+            WsResponse response = new WsResponse(json, WsMethod.JOIN);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            String json = objectMapper.writeValueAsString("Couldn't join the quiz");
+            WsResponse response = new WsResponse(json, WsMethod.JOIN);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
 }

@@ -60,7 +60,8 @@ public class QuizlyTests {
     @BeforeEach
     public void SetUp(){
         mockQuizRepo = new MockQuizRepo();
-        quizService = new QuizService(mockQuizRepo);
+        mockUserRepo = new MockUserRepo();
+        quizService = new QuizService(mockQuizRepo, mockUserRepo);
 
         mockQuestionRepo = new MockQuestionRepo();
         questionService = new QuestionService(mockQuestionRepo, quizService);
@@ -68,7 +69,6 @@ public class QuizlyTests {
         mockAnswerRepo = new MockAnswerRepo();
         answerService = new AnswerService(mockAnswerRepo);
 
-        mockUserRepo = new MockUserRepo();
         userService = new UserService(mockUserRepo);
 
         authService = new AuthService(mockUserRepo);

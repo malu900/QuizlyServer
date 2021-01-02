@@ -25,6 +25,9 @@ public class Quiz {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private List<User> participants;
+
 
     public Quiz(long quizId, String quizName, List<Question> questions, User user) {
         this.quizId = quizId;
@@ -69,7 +72,11 @@ public class Quiz {
         this.user = user;
     }
 
+    public List<User> getParticipants() {
+        return participants;
+    }
 
-
-
+    public void setParticipants(List<User> participants) {
+        this.participants = participants;
+    }
 }
