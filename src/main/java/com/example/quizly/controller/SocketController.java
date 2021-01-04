@@ -1,5 +1,6 @@
 package com.example.quizly.controller;
 
+import com.example.quizly.accesssingdata.Guest;
 import com.example.quizly.accesssingdata.User;
 import com.example.quizly.models.WsMethod;
 import com.example.quizly.models.WsResponse;
@@ -50,7 +51,7 @@ private final QuizService quizService;
     @SendTo("/topic/quizzes/{id}")
     public ResponseEntity<WsResponse> leaveGame(@Payload long userId, @DestinationVariable long id) throws JsonProcessingException {
         try{
-            List<User>users = quizService.LeaveQuiz(id, userId);
+            List<Guest>users = quizService.LeaveQuiz(id, userId);
             String json = objectMapper.writeValueAsString(users);
             WsResponse response = new WsResponse(json, WsMethod.LEAVE);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -64,9 +65,9 @@ private final QuizService quizService;
 
     @MessageMapping("/join/{id}")
     @SendTo("/topic/quizzes/{id}")
-    public ResponseEntity<WsResponse> joinGame(@Payload long userId, @DestinationVariable long id) throws JsonProcessingException {
+    public ResponseEntity<WsResponse> joinGame(@Payload long guestId, @Payload String code, @DestinationVariable long id) throws JsonProcessingException {
         try {
-            List<User>users = quizService.JoinQuiz(id, userId);
+            List<Guest>users = quizService.JoinQuiz(id, guestId, code);
             String json = objectMapper.writeValueAsString(users);
             WsResponse response = new WsResponse(json, WsMethod.JOIN);
             return new ResponseEntity<>(response, HttpStatus.OK);

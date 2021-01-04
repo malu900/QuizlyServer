@@ -52,7 +52,6 @@ public class AuthService implements AuthServiceInt{
     public String registerGuest(GuestModel guest) {
         Guest newGuest = new Guest();
         newGuest.setName(guest.getName());
-        newGuest.setCode(guest.getCode());
         guestRepository.save(newGuest);
         return "SuccesFull";
     }

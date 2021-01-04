@@ -1,9 +1,7 @@
 package com.example.quizly.service;
 
-import com.example.quizly.accesssingdata.Quiz;
-import com.example.quizly.accesssingdata.QuizRepository;
-import com.example.quizly.accesssingdata.User;
-import com.example.quizly.accesssingdata.UserRepository;
+import com.example.quizly.accesssingdata.*;
+import com.example.quizly.logic.CodeGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +12,12 @@ import java.util.Optional;
 public class QuizService {
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
+    private final GuestRepository guestRepository;
 
-    public QuizService(QuizRepository quizRepository, UserRepository userRepository) {
+    public QuizService(QuizRepository quizRepository, UserRepository userRepository, GuestRepository guestRepository) {
         this.quizRepository = quizRepository;
         this.userRepository = userRepository;
+        this.guestRepository = guestRepository;
     }
 
     public List<Quiz> getAllQuiz(){
@@ -25,8 +25,10 @@ public class QuizService {
     }
 
     public String addQuiz(Quiz quiz, User user) {
+        quiz.setCode(CodeGenerator.generateRandomCode());
         quizRepository.save(quiz);
         user.getQuizzes().add(quiz);
+        userRepository.save(user);
         return "Succesvol";
     }
 
@@ -57,27 +59,28 @@ public class QuizService {
     }
 
     @Transactional
-    public List<User> JoinQuiz(long id, long userId) {
+    public List<Guest> JoinQuiz(long id, long guestId, String code) {
         Quiz retrievedQuiz = findById(id);
-        User user = userRepository.findById(userId).get();
-        List<Quiz> quizzes = user.getQuizzes();
-        quizzes.add(retrievedQuiz);
-        user.setQuizzes(quizzes);
-        userRepository.save(user);
-        retrievedQuiz.getParticipants().add(user);
-        quizRepository.save(retrievedQuiz);
-        return retrievedQuiz.getParticipants();
+        if(retrievedQuiz.getCode() == code){
+            Guest guest = guestRepository.findById(guestId).get();
+            guest.setQuiz(retrievedQuiz);
+            guestRepository.save(guest);
+            retrievedQuiz.getParticipants().add(guest);
+            quizRepository.save(retrievedQuiz);
+            return retrievedQuiz.getParticipants();
+        }
+        else{
+            return null;
+        }
     }
 
     @Transactional
-    public List<User> LeaveQuiz(long id, long userId) {
+    public List<Guest> LeaveQuiz(long id, long guestId) {
         Quiz retrievedQuiz = findById(id);
-        User user = userRepository.findById(userId).get();
-        List<Quiz> quizzes = user.getQuizzes();
-        quizzes.remove(retrievedQuiz);
-        user.setQuizzes(quizzes);
-        userRepository.save(user);
-        retrievedQuiz.getParticipants().remove(user);
+        Guest guest = guestRepository.findById(guestId).get();
+        guest.setQuiz(null);
+        guestRepository.save(guest);
+        retrievedQuiz.getParticipants().remove(guest);
         quizRepository.save(retrievedQuiz);
         return retrievedQuiz.getParticipants();
     }

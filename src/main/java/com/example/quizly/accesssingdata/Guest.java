@@ -1,5 +1,7 @@
 package com.example.quizly.accesssingdata;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,7 +12,11 @@ public class Guest {
     private Long guestId;
 
     private String name;
-    private String code;
+
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
 
     public String getName() {
         return name;
@@ -20,13 +26,6 @@ public class Guest {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
     public Long getGuestId() {
         return guestId;
     }
@@ -35,5 +34,12 @@ public class Guest {
         this.guestId = guestId;
     }
 
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
 
 }

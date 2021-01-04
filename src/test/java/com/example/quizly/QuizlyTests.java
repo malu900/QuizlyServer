@@ -4,10 +4,7 @@ import com.example.quizly.accesssingdata.Answer;
 import com.example.quizly.accesssingdata.Question;
 import com.example.quizly.accesssingdata.Quiz;
 import com.example.quizly.accesssingdata.User;
-import com.example.quizly.mock.MockAnswerRepo;
-import com.example.quizly.mock.MockQuestionRepo;
-import com.example.quizly.mock.MockQuizRepo;
-import com.example.quizly.mock.MockUserRepo;
+import com.example.quizly.mock.*;
 import com.example.quizly.models.request.authentication.RegisterModel;
 import com.example.quizly.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,6 +41,9 @@ public class QuizlyTests {
     @Mock
     private MockUserRepo mockUserRepo;
 
+    @Mock
+    private MockGuestRepo mockGuestRepo;
+
     private QuizService quizService;
     private QuestionService questionService;
     private AnswerService answerService;
@@ -60,8 +60,9 @@ public class QuizlyTests {
     @BeforeEach
     public void SetUp(){
         mockQuizRepo = new MockQuizRepo();
+
         mockUserRepo = new MockUserRepo();
-        quizService = new QuizService(mockQuizRepo, mockUserRepo);
+        quizService = new QuizService(mockQuizRepo, mockUserRepo, mockGuestRepo);
 
         mockQuestionRepo = new MockQuestionRepo();
         questionService = new QuestionService(mockQuestionRepo, quizService);
@@ -78,7 +79,7 @@ public class QuizlyTests {
     void createQuizWithOneQuestion(){
         int oldCount = quizService.getAllQuiz().size();
 
-        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User());
+        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1");
         quiz.addQuestion(new Question(1L, new ArrayList<>(), new Quiz(), "what is king of flaaaavour?"));
         quizService.addQuiz(quiz, new User(42L, "potato-san", "potato@gmail.com", "iLovePotatoes420", new ArrayList<>()));
 
@@ -91,7 +92,7 @@ public class QuizlyTests {
     void createQuizWithThreeQuestions(){
         int oldCount = quizService.getAllQuiz().size();
 
-        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User());
+        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1");
         for (int i = 0; i < 3; i++){
             quiz.addQuestion(new Question(1L, new ArrayList<>(), new Quiz(), "this is question? numbahh " + i));
         }
@@ -110,7 +111,7 @@ public class QuizlyTests {
 
     @Test
     void addQuestionToExistingQuiz(){
-        quiz = new Quiz(69L, "weeb over 9000 quiz", new ArrayList<>(), new User());
+        quiz = new Quiz(69L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1");
         question = new Question(96L, new ArrayList<>(), new Quiz(), "what is king of flaaaavour?");
 
         quizService.addQuiz(quiz, new User(42L, "potato-san", "potato@gmail.com", "iLovePotatoes420", new ArrayList<>()));
@@ -125,7 +126,7 @@ public class QuizlyTests {
 
     @Test
     void addAnswersToQuestionWhenQuestionIsGettingAdded(){ //shoutout to semester 2 docent telling me to specify the methods with whole sentences
-        quiz = new Quiz(69L, "weeb quiz", new ArrayList<>(), new User());
+        quiz = new Quiz(69L, "weeb quiz", new ArrayList<>(), new User(),"1");
         question = new Question(96L, new ArrayList<>(), new Quiz(), "what's the monster inside of Yuji Itadori called?");
         answer = new Answer(1L, "Sukuna", question);
 

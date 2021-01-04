@@ -18,9 +18,9 @@ public class MockQuizRepo implements QuizRepository {
     private List<Quiz> quizzes = new ArrayList<>();
 
     public MockQuizRepo(){
-        quizzes.add(new Quiz(1L, "the weeb quiz", new ArrayList<>(), new User()));
-        quizzes.add(new Quiz(2L, "potato race quiz", new ArrayList<>(), new User()));
-        quizzes.add(new Quiz(3L, "memes on a stick", new ArrayList<>(), new User()));
+        quizzes.add(new Quiz(1L, "the weeb quiz", new ArrayList<>(), new User(), "1"));
+        quizzes.add(new Quiz(2L, "potato race quiz", new ArrayList<>(), new User(),"1"));
+        quizzes.add(new Quiz(3L, "memes on a stick", new ArrayList<>(), new User(),"1"));
 
     }
 
