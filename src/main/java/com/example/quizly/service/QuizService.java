@@ -13,11 +13,13 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
     private final GuestRepository guestRepository;
+    private final GuestService guestService;
 
-    public QuizService(QuizRepository quizRepository, UserRepository userRepository, GuestRepository guestRepository) {
+    public QuizService(QuizRepository quizRepository, UserRepository userRepository, GuestRepository guestRepository, GuestService guestService) {
         this.quizRepository = quizRepository;
         this.userRepository = userRepository;
         this.guestRepository = guestRepository;
+        this.guestService = guestService;
     }
 
     public List<Quiz> getAllQuiz(){
@@ -59,12 +61,10 @@ public class QuizService {
     }
 
     @Transactional
-    public List<Guest> JoinQuiz(long id, long guestId, String code) {
-        Quiz retrievedQuiz = findById(id);
-        if(retrievedQuiz.getCode() == code){
-            Guest guest = guestRepository.findById(guestId).get();
-            guest.setQuiz(retrievedQuiz);
-            guestRepository.save(guest);
+    public List<Guest> JoinQuiz(String name, String code) {
+        Quiz retrievedQuiz = quizRepository.findByCode(code);
+        if(retrievedQuiz != null){
+            Guest guest = guestService.CreateGuest(retrievedQuiz, name);
             retrievedQuiz.getParticipants().add(guest);
             quizRepository.save(retrievedQuiz);
             return retrievedQuiz.getParticipants();

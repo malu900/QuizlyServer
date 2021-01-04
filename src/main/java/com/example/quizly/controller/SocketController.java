@@ -63,11 +63,11 @@ private final QuizService quizService;
         }
     }
 
-    @MessageMapping("/join/{id}")
-    @SendTo("/topic/quizzes/{id}")
-    public ResponseEntity<WsResponse> joinGame(@Payload long guestId, @Payload String code, @DestinationVariable long id) throws JsonProcessingException {
+    @MessageMapping("/join/{code}")
+    @SendTo("/topic/quizzes/{code}")
+    public ResponseEntity<WsResponse> joinGame(@Payload String name, @DestinationVariable String code) throws JsonProcessingException {
         try {
-            List<Guest>users = quizService.JoinQuiz(id, guestId, code);
+            List<Guest>users = quizService.JoinQuiz(name, code);
             String json = objectMapper.writeValueAsString(users);
             WsResponse response = new WsResponse(json, WsMethod.JOIN);
             return new ResponseEntity<>(response, HttpStatus.OK);

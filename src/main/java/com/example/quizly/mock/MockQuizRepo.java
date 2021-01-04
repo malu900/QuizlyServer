@@ -146,4 +146,9 @@ public class MockQuizRepo implements QuizRepository {
     public <S extends Quiz> boolean exists(Example<S> example) {
         return false;
     }
+
+    @Override
+    public Quiz findByCode(String code) {
+        return null;
+    }
 }

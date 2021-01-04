@@ -6,6 +6,8 @@ import com.example.quizly.models.request.authentication.RegisterModel;
 import com.example.quizly.models.response.Authentication.LoginResponse;
 import com.example.quizly.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,22 +17,25 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerUser(@RequestBody RegisterModel user){
-        if(user.getPassword().equals(user.getSecondPassword())){
-            return authService.register(user);
-        }
-        else {
-            return "unsuccesfull";
-        }
+    @PostMapping(path = "/register")
+    public ResponseEntity<String> registerUser(@RequestBody RegisterModel user){
+       try {
+           if (user.getPassword().equals(user.getSecondPassword())) {
+               return new ResponseEntity<String>(authService.register(user), HttpStatus.OK);
+           }
+       }
+       catch (Exception e){
+           e.printStackTrace();
+       }
+       return null;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponse login(@RequestBody LoginModel user){
         LoginResponse returnValue = authService.login(user);
         return returnValue;
-
     }
+
     @RequestMapping(value = "/guest", method = RequestMethod.POST)
     public String registerGuest(@RequestBody GuestModel guest) throws Exception {
         try {

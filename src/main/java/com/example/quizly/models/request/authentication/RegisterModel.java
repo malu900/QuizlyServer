@@ -13,6 +13,9 @@ public class RegisterModel {
         this.secondPassword = secondPassword;
     }
 
+    public RegisterModel() {
+    }
+
     public String getName() {
         return name;
     }

@@ -62,7 +62,7 @@ public class QuizlyTests {
         mockQuizRepo = new MockQuizRepo();
 
         mockUserRepo = new MockUserRepo();
-        quizService = new QuizService(mockQuizRepo, mockUserRepo, mockGuestRepo);
+        quizService = new QuizService(mockQuizRepo, mockUserRepo, mockGuestRepo, null);
 
         mockQuestionRepo = new MockQuestionRepo();
         questionService = new QuestionService(mockQuestionRepo, quizService);
