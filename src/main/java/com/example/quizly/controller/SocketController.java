@@ -33,18 +33,19 @@ private final QuizService quizService;
 
     @MessageMapping("/getAll")
     @SendTo("/topic/quizzes")
-    public String getAllQuiz() throws JsonProcessingException {
-        List<Quiz> quizzes =quizService.getAllQuiz();
-        if (quizzes== null)
-        {
-            try {
-                throw new Exception("No quiz found : " + quizzes);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public ResponseEntity<WsResponse> getAllQuiz() throws JsonProcessingException {
+        try{
+            WsResponse response;
+            List<Quiz> quizzes = quizService.getAllQuiz();
+            String json = objectMapper.writeValueAsString(quizzes);
+            response = new WsResponse(json, WsMethod.GETALL);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            String json = objectMapper.writeValueAsString("Can't find all quizzes");
+            WsResponse response = new WsResponse(json, WsMethod.GETALL);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-        String json = objectMapper.writeValueAsString(quizzes);
-        return json;
     }
 
     @MessageMapping("/leave/{id}")

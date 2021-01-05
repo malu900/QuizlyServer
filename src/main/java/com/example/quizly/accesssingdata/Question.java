@@ -12,7 +12,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long questionId;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "question_id", insertable = false, updatable = false)
     private List<Answer> answers;
 

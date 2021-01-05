@@ -1,6 +1,8 @@
 package com.example.quizly.accesssingdata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,7 +19,8 @@ public class Quiz {
 
     private String code;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Question> questions;
 
@@ -26,6 +29,7 @@ public class Quiz {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Guest> participants;
