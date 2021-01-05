@@ -5,6 +5,7 @@ import com.example.quizly.logic.CodeGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,14 +75,31 @@ public class QuizService {
         }
     }
 
+    //necessary for mock
+    public List<Guest> JoinQuiz(long guestId, String name, String code) {
+        Quiz retrievedQuiz = quizRepository.findByCode(code);
+        if(retrievedQuiz != null){
+            Guest guest = guestService.CreateGuest(guestId, retrievedQuiz, name);
+            retrievedQuiz.getParticipants().add(guest);
+            quizRepository.save(retrievedQuiz);
+            return retrievedQuiz.getParticipants();
+        }
+        else{
+            return null;
+        }
+    }
+
     @Transactional
-    public List<Guest> LeaveQuiz(long id, long guestId) {
-        Quiz retrievedQuiz = findById(id);
-        Guest guest = guestRepository.findById(guestId).get();
-        guest.setQuiz(null);
-        guestRepository.save(guest);
-        retrievedQuiz.getParticipants().remove(guest);
-        quizRepository.save(retrievedQuiz);
-        return retrievedQuiz.getParticipants();
+    public List<Guest> LeaveQuiz(long quizId, long guestId) {
+        Quiz retrievedQuiz = findById(quizId);
+        Optional<Guest> guest = guestRepository.findById(guestId);
+        if(guest.isPresent()){
+            guest.get().setQuiz(null);
+            guestRepository.save(guest.get());
+            retrievedQuiz.getParticipants().remove(guest.get());
+            quizRepository.save(retrievedQuiz);
+            return retrievedQuiz.getParticipants();
+        }
+        return new ArrayList<>();
     }
 }

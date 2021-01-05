@@ -35,12 +35,13 @@ public class Quiz {
     private List<Guest> participants;
 
 
-    public Quiz(long quizId, String quizName, List<Question> questions, User user, String code) {
+    public Quiz(long quizId, String quizName, List<Question> questions, User user, String code, List<Guest> participants) {
         this.quizId = quizId;
         this.quizName = quizName;
         this.questions = questions;
         this.user = user;
         this.code = code;
+        this.participants = participants;
     }
 
     public Quiz() { }

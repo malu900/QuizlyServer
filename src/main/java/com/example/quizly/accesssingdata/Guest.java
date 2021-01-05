@@ -18,6 +18,14 @@ public class Guest {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
+    public Guest(Long guestId, String name, Quiz quiz) {
+        this.guestId = guestId;
+        this.name = name;
+        this.quiz = quiz;
+    }
+
+    public Guest() { }
+
     public String getName() {
         return name;
     }
