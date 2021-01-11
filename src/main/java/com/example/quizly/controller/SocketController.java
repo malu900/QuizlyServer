@@ -26,7 +26,7 @@ public class SocketController {
 private final QuizService quizService;
 
     @Autowired
-    public SocketController (QuizService quizService, UserService userService){
+    public SocketController(QuizService quizService){
         this.quizService = quizService;
     }
 

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +19,9 @@ public class MockQuizRepo implements QuizRepository {
     private List<Quiz> quizzes = new ArrayList<>();
 
     public MockQuizRepo(){
-        quizzes.add(new Quiz(1L, "the weeb quiz", new ArrayList<>(), new User(), "1"));
-        quizzes.add(new Quiz(2L, "potato race quiz", new ArrayList<>(), new User(),"1"));
-        quizzes.add(new Quiz(3L, "memes on a stick", new ArrayList<>(), new User(),"1"));
+        quizzes.add(new Quiz(1L, "the weeb quiz", new ArrayList<>(), new User(), "S3NDB0BSANDV4G3N3", new ArrayList<>()));
+        quizzes.add(new Quiz(2L, "potato race quiz", new ArrayList<>(), new User(),"1", new ArrayList<>()));
+        quizzes.add(new Quiz(3L, "memes on a stick", new ArrayList<>(), new User(),"1", new ArrayList<>()));
 
     }
 
@@ -43,6 +44,21 @@ public class MockQuizRepo implements QuizRepository {
     @Override
     public void deleteById(Long aLong) {
         quizzes.removeIf(quiz -> quiz.getQuizId() == aLong);
+    }
+
+    @Override
+    public Quiz findByCode(String code) {
+        for (Quiz q : quizzes) {
+            if(q.getCode().equals(code)){
+                return q;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Quiz> getBidsByProductID(Long productID) {
+        return null;
     }
 
     //unnecessary methods...
@@ -145,10 +161,5 @@ public class MockQuizRepo implements QuizRepository {
     @Override
     public <S extends Quiz> boolean exists(Example<S> example) {
         return false;
-    }
-
-    @Override
-    public Quiz findByCode(String code) {
-        return null;
     }
 }

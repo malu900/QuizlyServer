@@ -2,19 +2,36 @@ package com.example.quizly.mock;
 
 import com.example.quizly.accesssingdata.Guest;
 import com.example.quizly.accesssingdata.GuestRepository;
+import org.apache.catalina.AccessLog;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class MockGuestRepo implements GuestRepository {
+    private List<Guest> guests = new ArrayList<>();
+
+    @Override
+    public <S extends Guest> S save(S s) {
+        guests.add(s);
+        return s;
+    }
+
     @Override
     public List<Guest> findAll() {
-        return null;
+        return guests;
     }
+
+    @Override
+    public Optional<Guest> findById(Long aLong) {
+        return guests.stream().filter(guest -> guest.getGuestId().equals(aLong)).findFirst();
+    }
+
+    //unnecessary methods
 
     @Override
     public List<Guest> findAll(Sort sort) {
@@ -57,18 +74,8 @@ public class MockGuestRepo implements GuestRepository {
     }
 
     @Override
-    public <S extends Guest> S save(S s) {
-        return null;
-    }
-
-    @Override
     public <S extends Guest> List<S> saveAll(Iterable<S> iterable) {
         return null;
-    }
-
-    @Override
-    public Optional<Guest> findById(Long aLong) {
-        return Optional.empty();
     }
 
     @Override
