@@ -26,6 +26,12 @@ public class QuizController {
         this.questionService = questionService;
     }
 
+    @GetMapping(path="/{quizId}")
+    public ResponseEntity<Quiz> getById(@PathVariable Long quizId) {
+       Quiz quiz = quizService.getById(quizId);
+       return new ResponseEntity<>(quiz, HttpStatus.OK);
+    }
+
     @PostMapping(path="/{userId}") // Map ONLY POST Requests
     public @ResponseBody
     String addNewQuiz (@RequestBody Quiz quiz, @PathVariable long userId)throws Exception{

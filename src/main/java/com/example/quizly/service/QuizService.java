@@ -34,7 +34,11 @@ public class QuizService {
         userRepository.save(user);
         return "Succesvol";
     }
-
+    public Quiz getById(Long id) {
+        Optional<Quiz> quiz = quizRepository.findById(id);
+        Quiz quiz1 = quiz.get();
+        return quiz1;
+    }
     public String updateQuiz(Quiz quiz) {
         Optional<Quiz> quizFromDb = quizRepository.findById(quiz.getQuizId());
         if(quizFromDb.isPresent()){
