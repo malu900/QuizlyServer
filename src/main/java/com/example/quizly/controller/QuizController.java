@@ -1,5 +1,6 @@
 package com.example.quizly.controller;
 
+import com.example.quizly.models.response.Authentication.QuizREST;
 import com.example.quizly.service.QuestionService;
 import com.example.quizly.service.QuizService;
 import com.example.quizly.service.UserService;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("quiz")
@@ -51,7 +55,16 @@ public class QuizController {
             throw new Exception("Cant find quiz to delete", e);
         }
     }
-
+    @GetMapping(path = "/GetByUserID/{userID}")
+    List<QuizREST> GetPersonalQuizzes(@PathVariable Long userID){
+        List<QuizREST> returnlist = new ArrayList<>();
+        List<Quiz> quizzes = quizService.getQuizzesByUserID(userID);
+        for (Quiz quiz: quizzes)
+        {
+            returnlist.add(new QuizREST(quiz));
+        }
+        return returnlist;
+    }
     @PutMapping(path = "/update")
     public ResponseEntity<String > updateQuiz(@RequestBody Quiz quiz) {
         String updateQuiz= quizService.updateQuiz(quiz);

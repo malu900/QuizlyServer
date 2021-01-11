@@ -23,6 +23,10 @@ public class QuizService {
         this.guestService = guestService;
     }
 
+    public List<Quiz> getQuizzesByUserID(Long userID){
+        return quizRepository.getBidsByProductID(userID);
+    }
+
     public List<Quiz> getAllQuiz(){
         return quizRepository.findAll();
     }

@@ -56,6 +56,11 @@ public class MockQuizRepo implements QuizRepository {
         return null;
     }
 
+    @Override
+    public List<Quiz> getBidsByProductID(Long productID) {
+        return null;
+    }
+
     //unnecessary methods...
 
     @Override
