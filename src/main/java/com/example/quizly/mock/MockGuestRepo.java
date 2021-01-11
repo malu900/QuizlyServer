@@ -130,4 +130,9 @@ public class MockGuestRepo implements GuestRepository {
     public <S extends Guest> boolean exists(Example<S> example) {
         return false;
     }
+
+    @Override
+    public Guest findByName(String name) {
+        return null;
+    }
 }

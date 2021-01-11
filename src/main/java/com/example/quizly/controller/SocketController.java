@@ -18,6 +18,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -48,11 +49,11 @@ private final QuizService quizService;
         }
     }
 
-    @MessageMapping("/leave/{id}")
-    @SendTo("/topic/quizzes/{id}")
-    public ResponseEntity<WsResponse> leaveGame(@Payload long userId, @DestinationVariable long id) throws JsonProcessingException {
+    @MessageMapping("/leave/{code}")
+    @SendTo("/topic/quizzes/{code}")
+    public ResponseEntity<WsResponse> leaveGame(@DestinationVariable String code, @Payload String name) throws JsonProcessingException {
         try{
-            List<Guest>users = quizService.LeaveQuiz(id, userId);
+            List<Guest>users = quizService.LeaveQuiz(code, name);
             String json = objectMapper.writeValueAsString(users);
             WsResponse response = new WsResponse(json, WsMethod.LEAVE);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -66,10 +67,10 @@ private final QuizService quizService;
 
     @MessageMapping("/join/{code}")
     @SendTo("/topic/quizzes/{code}")
-    public ResponseEntity<WsResponse> joinGame(@Payload String name, @DestinationVariable String code) throws JsonProcessingException {
+    public ResponseEntity<WsResponse> joinGame(@DestinationVariable String code, @Payload String name) throws JsonProcessingException {
         try {
-            List<Guest>users = quizService.JoinQuiz(name, code);
-            String json = objectMapper.writeValueAsString(users);
+            List<Guest>guests = quizService.JoinQuiz(name, code);
+            String json = objectMapper.writeValueAsString(guests);
             WsResponse response = new WsResponse(json, WsMethod.JOIN);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){

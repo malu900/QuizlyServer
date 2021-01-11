@@ -12,11 +12,15 @@ public class GuestService {
     GuestRepository guestRepository;
 
     public Guest CreateGuest(Quiz quiz, String name){
-        Guest guest = new Guest();
-        guest.setName(name);
-        guest.setQuiz(quiz);
-        guest.setQuiz(quiz);
-        guestRepository.save(guest);
-        return guest;
+        if(guestRepository.findByName(name) == null){
+            Guest guest = new Guest();
+            guest.setName(name);
+            guest.setQuiz(quiz);
+            guestRepository.save(guest);
+            return guest;
+        }
+        else {
+            return null;
+        }
     }
 }

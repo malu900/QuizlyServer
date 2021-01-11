@@ -57,31 +57,37 @@ public class QuizService {
         return quiz.orElseGet(Quiz::new);
     }
 
-    public void addQuiz(Quiz quiz) {
-    }
-
     @Transactional
-    public List<Guest> JoinQuiz(String name, String code) {
+    public List<Guest> JoinQuiz(String name, String code) throws Exception {
         Quiz retrievedQuiz = quizRepository.findByCode(code);
         if(retrievedQuiz != null){
             Guest guest = guestService.CreateGuest(retrievedQuiz, name);
-            retrievedQuiz.getParticipants().add(guest);
+            if(guest != null){
+                retrievedQuiz.getParticipants().add(guest);
+                quizRepository.save(retrievedQuiz);
+                return retrievedQuiz.getParticipants();
+            }
+            else {
+                throw new NullPointerException();
+            }
+        }
+        else{
+            throw new NullPointerException();
+        }
+    }
+
+    @Transactional
+    public List<Guest> LeaveQuiz(String code, String name) {
+        Quiz retrievedQuiz = quizRepository.findByCode(code);
+        if(retrievedQuiz != null) {
+            Guest guest = guestRepository.findByName(name);
+            guestRepository.delete(guest);
+            retrievedQuiz.getParticipants().remove(guest);
             quizRepository.save(retrievedQuiz);
             return retrievedQuiz.getParticipants();
         }
         else{
             return null;
         }
-    }
-
-    @Transactional
-    public List<Guest> LeaveQuiz(long id, long guestId) {
-        Quiz retrievedQuiz = findById(id);
-        Guest guest = guestRepository.findById(guestId).get();
-        guest.setQuiz(null);
-        guestRepository.save(guest);
-        retrievedQuiz.getParticipants().remove(guest);
-        quizRepository.save(retrievedQuiz);
-        return retrievedQuiz.getParticipants();
     }
 }
