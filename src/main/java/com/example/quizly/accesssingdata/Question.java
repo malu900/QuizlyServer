@@ -1,6 +1,8 @@
 package com.example.quizly.accesssingdata;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +14,8 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long questionId;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "question_id", insertable = false, updatable = false)
     private List<Answer> answers;
 

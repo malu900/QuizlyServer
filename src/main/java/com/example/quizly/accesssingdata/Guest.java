@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="guests")
 public class Guest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long guestId;
@@ -24,7 +25,8 @@ public class Guest {
         this.quiz = quiz;
     }
 
-    public Guest() { }
+    public Guest() {
+    }
 
     public String getName() {
         return name;
@@ -49,5 +51,4 @@ public class Guest {
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
-
 }

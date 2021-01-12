@@ -111,7 +111,7 @@ public class QuizlyTests {
 
     //lobby joinen == quiz joinen
     @Test
-    void joinQuiz(){
+    void joinQuiz() throws Exception {
        int oldCount = quizService.findById(1L).getParticipants().size();
        quizService.JoinQuiz("mahnaemehjeff", "S3NDB0BSANDV4G3N3");
        int newCount = quizService.findById(1L).getParticipants().size();
@@ -121,11 +121,11 @@ public class QuizlyTests {
 
     //lobby leaven == quiz leaven
     @Test
-    void leaveQuiz(){
-        quizService.JoinQuiz(67L, "mahnaemehjeff", "S3NDB0BSANDV4G3N3");
+    void leaveQuiz() throws Exception {
+        quizService.JoinQuiz( "mahnaemehjeff", "S3NDB0BSANDV4G3N3");
         int oldCount = quizService.findById(1L).getParticipants().size();
 
-        quizService.LeaveQuiz(1L, 67L);
+        quizService.LeaveQuiz("S3NDB0BSANDV4G3N3", "mahnaemehjeff");
         int newCount = quizService.findById(1L).getParticipants().size();
 
         assertNotEquals(oldCount, newCount);

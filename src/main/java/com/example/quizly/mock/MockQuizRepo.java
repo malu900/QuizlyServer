@@ -57,7 +57,7 @@ public class MockQuizRepo implements QuizRepository {
     }
 
     @Override
-    public List<Quiz> getBidsByProductID(Long productID) {
+    public List<Quiz> getQuizByUserID(Long userId) {
         return null;
     }
 

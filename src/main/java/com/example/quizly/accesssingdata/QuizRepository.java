@@ -13,5 +13,5 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     Quiz findByCode(@Param("code") String code);
 
     @Query("SELECT quiz FROM Quiz quiz WHERE quiz.user.userId = ?1")
-    List<Quiz> getBidsByProductID(Long productID);
+    List<Quiz> getQuizByUserID(Long userId);
 }
