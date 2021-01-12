@@ -52,6 +52,7 @@ public class QuestionService {
 
     public Question getCurrentQuestion(long quizId, int roundNumber){
         Quiz quiz = quizService.findById(quizId);
+        System.out.println(quiz);
         return quiz.getQuestions().get(roundNumber-1);
     }
 

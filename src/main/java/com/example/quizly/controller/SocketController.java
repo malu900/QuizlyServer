@@ -1,11 +1,9 @@
 package com.example.quizly.controller;
 
-import com.example.quizly.accesssingdata.Guest;
-import com.example.quizly.accesssingdata.User;
+import com.example.quizly.accesssingdata.*;
 import com.example.quizly.models.WsMethod;
 import com.example.quizly.models.WsResponse;
 import com.example.quizly.service.QuizService;
-import com.example.quizly.accesssingdata.Quiz;
 import com.example.quizly.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +76,22 @@ private final QuizService quizService;
             e.printStackTrace();
             String json = objectMapper.writeValueAsString("Couldn't join the quiz");
             WsResponse response = new WsResponse(json, WsMethod.JOIN);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @MessageMapping("/startGame/{code}")
+    @SendTo("/topic/quizzes/{code}")
+    public ResponseEntity<WsResponse> startGame(@Payload Boolean start) throws JsonProcessingException {
+        try {
+            start = start;
+            String json = objectMapper.writeValueAsString(start);
+            WsResponse response = new WsResponse(json, WsMethod.START);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            start = start;
+            String json = objectMapper.writeValueAsString("Couldn't start the quiz");
+            WsResponse response = new WsResponse(json, WsMethod.START);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }

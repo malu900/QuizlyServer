@@ -19,14 +19,16 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    public Answer() {
-    }
 
     public Answer(long answerId, String answerContent, Question question){
         this.answerId = answerId;
         this.answerContent = answerContent;
         this.question = question;
     }
+    public Answer() {
+
+    }
+
 
     public Long getAnswerId() {
         return answerId;
