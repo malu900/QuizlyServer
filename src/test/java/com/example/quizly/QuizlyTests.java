@@ -107,7 +107,7 @@ public class QuizlyTests {
 
     //quizvraag goed beantwoorden hoort in logica te zitten (zit er op het moment er nog niet in)
     //quizvraag fout beantwoorden hoort in logica te zitten (zit er op het moment er nog niet in)
-    //lobby aanmaken == quiz aanmaken
+    //lobby aanmaken == quiz aanmaken (done)
 
     //lobby joinen == quiz joinen
     @Test
@@ -153,7 +153,7 @@ public class QuizlyTests {
     void addAnswersToQuestionWhenQuestionIsGettingAdded(){ //shoutout to semester 2 docent telling me to specify the methods with whole sentences
         quiz = new Quiz(69L, "weeb quiz", new ArrayList<>(), new User(),"1", new ArrayList<>());
         question = new Question(96L, new ArrayList<>(), new Quiz(), "what's the monster inside of Yuji Itadori called?");
-        answer = new Answer(1L, "Sukuna", question);
+        answer = new Answer(1L, "Sukuna", true, question);
 
         quizService.addQuiz(quiz, new User(42L, "potato-san", "potato@gmail.com", "iLovePotatoes420", new ArrayList<>()));
         questionService.addQuestion(question, quiz);

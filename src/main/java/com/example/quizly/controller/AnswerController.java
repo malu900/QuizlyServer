@@ -38,13 +38,13 @@ public class AnswerController {
         return new ResponseEntity<>(answers, HttpStatus.OK);
     }
 
-    @PostMapping(path="/{id}") // Map ONLY POST Requests
+    @PostMapping(path="/{questionId}") // Map ONLY POST Requests
     public @ResponseBody
-    String addNewAnswer (@RequestBody Answer answer, @PathVariable long id)throws Exception{
+    String addNewAnswer (@RequestBody Answer answer, @PathVariable long questionId)throws Exception{
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         try {
-            Question question = questionService.findById(id);
+            Question question = questionService.findById(questionId);
             answer.setQuestion(question);
             answerService.addAnswer(answer, question);
             return "Saved";

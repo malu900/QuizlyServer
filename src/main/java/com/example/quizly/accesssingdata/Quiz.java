@@ -34,7 +34,6 @@ public class Quiz {
     @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Guest> participants;
 
-
     public Quiz(long quizId, String quizName, List<Question> questions, User user, String code, List<Guest> participants) {
         this.quizId = quizId;
         this.quizName = quizName;
