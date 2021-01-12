@@ -27,6 +27,11 @@ public class Answer {
         this.rightAnswer = rightAnswer;
         this.question = question;
     }
+
+    public Answer() {
+
+    }
+
     public Long getAnswerId() {
         return answerId;
     }
