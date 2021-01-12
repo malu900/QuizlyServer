@@ -32,7 +32,7 @@ public class QuizController {
 
     @GetMapping(path="/{quizId}")
     public ResponseEntity<Quiz> getById(@PathVariable Long quizId) {
-       Quiz quiz = quizService.getById(quizId);
+       Quiz quiz = quizService.findById(quizId);
        return new ResponseEntity<>(quiz, HttpStatus.OK);
     }
 
@@ -56,7 +56,7 @@ public class QuizController {
         }
     }
     @GetMapping(path = "/GetByUserID/{userID}")
-    List<QuizREST> GetPersonalQuizzes(@PathVariable Long userID){
+    public List<QuizREST> getPersonalQuizzes(@PathVariable Long userID){
         List<QuizREST> returnlist = new ArrayList<>();
         List<Quiz> quizzes = quizService.getQuizzesByUserID(userID);
         for (Quiz quiz: quizzes)

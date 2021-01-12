@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GuestService {
-    @Autowired
-    GuestRepository guestRepository;
+
+    private final GuestRepository guestRepository;
+
+    public GuestService(GuestRepository guestRepository){
+        this.guestRepository = guestRepository;
+    }
 
     public Guest CreateGuest(Quiz quiz, String name){
         if(guestRepository.findByName(name) == null){

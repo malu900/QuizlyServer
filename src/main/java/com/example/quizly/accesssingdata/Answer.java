@@ -27,7 +27,6 @@ public class Answer {
         this.answerContent = answerContent;
         this.question = question;
     }
-    public Answer(){}
     public Long getAnswerId() {
         return answerId;
     }

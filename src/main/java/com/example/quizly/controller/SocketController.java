@@ -81,6 +81,22 @@ private final QuizService quizService;
         }
     }
 
+    @MessageMapping("/join/host/{code}")
+    @SendTo("/topic/quizzes/{code}")
+    public ResponseEntity<WsResponse> joinGame(@DestinationVariable String code, @Payload User user) throws JsonProcessingException {
+        try {
+            List<User>users = quizService.JoinQuizAsHost(user, code);
+            String json = objectMapper.writeValueAsString(users);
+            WsResponse response = new WsResponse(json, WsMethod.JOINASHOST);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            String json = objectMapper.writeValueAsString("Couldn't join the quiz");
+            WsResponse response = new WsResponse(json, WsMethod.JOINASHOST);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 
 }
