@@ -1,5 +1,9 @@
-package com.example.quizly.accesssingdata;
+package com.example.quizly.models.response.Authentication;
 
+import com.example.quizly.accesssingdata.Guest;
+import com.example.quizly.accesssingdata.Question;
+import com.example.quizly.accesssingdata.Quiz;
+import com.example.quizly.accesssingdata.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -7,44 +11,25 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name="quizzes")
-public class Quiz {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class QuizREST {
     private long quizId;
-
     private String quizName;
-
     private String code;
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Question> questions;
-
-    @JsonIgnore
-    @ManyToOne()
-    @JoinColumn(name = "user_id")
     private User user;
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Guest> participants;
 
 
-    public Quiz(long quizId, String quizName, List<Question> questions, User user, String code, List<Guest> participants) {
-        this.quizId = quizId;
-        this.quizName = quizName;
-        this.questions = questions;
-        this.user = user;
-        this.code = code;
-        this.participants = participants;
+    public QuizREST(Quiz quiz) {
+        this.quizId = quiz.getQuizId();
+        this.quizName = quiz.getQuizName();
+        this.questions = quiz.getQuestions();
+        this.user = quiz.getUser();
+        this.code = quiz.getCode();
+        this.participants = quiz.getParticipants();
     }
 
-    public Quiz() { }
+    public QuizREST() { }
 
     public long getQuizId() {
         return quizId;
@@ -95,4 +80,5 @@ public class Quiz {
     public void setParticipants(List<Guest> participants) {
         this.participants = participants;
     }
+
 }

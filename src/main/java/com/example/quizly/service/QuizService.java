@@ -91,5 +91,11 @@ public class QuizService {
         }
     }
 
+    public List<Quiz> getQuizzesByUserID(Long userID) {
+        return quizRepository.getQuizByUserID(userID);
+    }
 
+    public List<User> JoinQuizAsHost(User user, String code) {
+        return null;
+    }
 }

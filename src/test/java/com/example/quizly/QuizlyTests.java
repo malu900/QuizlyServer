@@ -1,15 +1,13 @@
 package com.example.quizly;
 
-import com.example.quizly.accesssingdata.Answer;
-import com.example.quizly.accesssingdata.Question;
-import com.example.quizly.accesssingdata.Quiz;
-import com.example.quizly.accesssingdata.User;
+import com.example.quizly.accesssingdata.*;
 import com.example.quizly.mock.*;
 import com.example.quizly.models.request.authentication.RegisterModel;
 import com.example.quizly.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.internal.filter.ValueNode;
+import org.apache.tomcat.websocket.AsyncChannelWrapper;
 import org.hibernate.dialect.function.AbstractAnsiTrimEmulationFunction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,25 +47,30 @@ public class QuizlyTests {
     private AnswerService answerService;
     private UserService userService;
     private AuthService authService;
+    private GuestService guestService;
 
     private Quiz quiz;
     private Question question;
     private Answer answer;
     private User user;
+    private Guest guest;
 
     private ObjectMapper mapper = new ObjectMapper();
 
     @BeforeEach
     public void SetUp(){
         mockQuizRepo = new MockQuizRepo();
-
         mockUserRepo = new MockUserRepo();
-        quizService = new QuizService(mockQuizRepo, mockUserRepo, mockGuestRepo, null);
-
         mockQuestionRepo = new MockQuestionRepo();
+        mockAnswerRepo = new MockAnswerRepo();
+        mockGuestRepo = new MockGuestRepo();
+
+        guestService = new GuestService(mockGuestRepo);
+
+        quizService = new QuizService(mockQuizRepo, mockUserRepo, mockGuestRepo, guestService);
+
         questionService = new QuestionService(mockQuestionRepo, quizService);
 
-        mockAnswerRepo = new MockAnswerRepo();
         answerService = new AnswerService(mockAnswerRepo);
 
         userService = new UserService(mockUserRepo);
@@ -79,7 +82,7 @@ public class QuizlyTests {
     void createQuizWithOneQuestion(){
         int oldCount = quizService.getAllQuiz().size();
 
-        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1");
+        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1", new ArrayList<>());
         quiz.addQuestion(new Question(1L, new ArrayList<>(), new Quiz(), "what is king of flaaaavour?"));
         quizService.addQuiz(quiz, new User(42L, "potato-san", "potato@gmail.com", "iLovePotatoes420", new ArrayList<>()));
 
@@ -92,7 +95,7 @@ public class QuizlyTests {
     void createQuizWithThreeQuestions(){
         int oldCount = quizService.getAllQuiz().size();
 
-        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1");
+        quiz = new Quiz(1L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1", new ArrayList<>());
         for (int i = 0; i < 3; i++){
             quiz.addQuestion(new Question(1L, new ArrayList<>(), new Quiz(), "this is question? numbahh " + i));
         }
@@ -104,14 +107,36 @@ public class QuizlyTests {
 
     //quizvraag goed beantwoorden hoort in logica te zitten (zit er op het moment er nog niet in)
     //quizvraag fout beantwoorden hoort in logica te zitten (zit er op het moment er nog niet in)
-    //lobby aanmaken ???
-    //lobby joinen ???
+    //lobby aanmaken == quiz aanmaken
+
+    //lobby joinen == quiz joinen
+    @Test
+    void joinQuiz() throws Exception {
+       int oldCount = quizService.findById(1L).getParticipants().size();
+       quizService.JoinQuiz("mahnaemehjeff", "S3NDB0BSANDV4G3N3");
+       int newCount = quizService.findById(1L).getParticipants().size();
+
+       assertNotEquals(oldCount, newCount);
+    }
+
+    //lobby leaven == quiz leaven
+    @Test
+    void leaveQuiz() throws Exception {
+        quizService.JoinQuiz( "mahnaemehjeff", "S3NDB0BSANDV4G3N3");
+        int oldCount = quizService.findById(1L).getParticipants().size();
+
+        quizService.LeaveQuiz("S3NDB0BSANDV4G3N3", "mahnaemehjeff");
+        int newCount = quizService.findById(1L).getParticipants().size();
+
+        assertNotEquals(oldCount, newCount);
+    }
+
     //lobby starten ???
     //next question -----
 
     @Test
     void addQuestionToExistingQuiz(){
-        quiz = new Quiz(69L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1");
+        quiz = new Quiz(69L, "weeb over 9000 quiz", new ArrayList<>(), new User(),"1", new ArrayList<>());
         question = new Question(96L, new ArrayList<>(), new Quiz(), "what is king of flaaaavour?");
 
         quizService.addQuiz(quiz, new User(42L, "potato-san", "potato@gmail.com", "iLovePotatoes420", new ArrayList<>()));
@@ -119,14 +144,14 @@ public class QuizlyTests {
         questionService.addQuestion(question, quiz);
 
         Quiz quizSixtyNine = quizService.findById(69L);
-        int newCount = oldCount + 1;
+        int newCount = quizSixtyNine.getQuestions().size();
 
         assertNotEquals(oldCount, newCount);
     }
 
     @Test
     void addAnswersToQuestionWhenQuestionIsGettingAdded(){ //shoutout to semester 2 docent telling me to specify the methods with whole sentences
-        quiz = new Quiz(69L, "weeb quiz", new ArrayList<>(), new User(),"1");
+        quiz = new Quiz(69L, "weeb quiz", new ArrayList<>(), new User(),"1", new ArrayList<>());
         question = new Question(96L, new ArrayList<>(), new Quiz(), "what's the monster inside of Yuji Itadori called?");
         answer = new Answer(1L, "Sukuna", question);
 
