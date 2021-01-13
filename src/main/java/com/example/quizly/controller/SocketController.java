@@ -80,16 +80,16 @@ private final QuizService quizService;
         }
     }
     @MessageMapping("/startGame/{code}")
-    @SendTo("/topic/quizzes/{code}")
+    @SendTo("/topic/startGame/{code}")
     public ResponseEntity<WsResponse> startGame(@Payload Boolean start) throws JsonProcessingException {
         try {
-            start = start;
-            String json = objectMapper.writeValueAsString(start);
+            Boolean Start = start;
+            String json = objectMapper.writeValueAsString(Start);
             WsResponse response = new WsResponse(json, WsMethod.START);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
-            start = start;
+            Boolean Start = start;
             String json = objectMapper.writeValueAsString("Couldn't start the quiz");
             WsResponse response = new WsResponse(json, WsMethod.START);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
