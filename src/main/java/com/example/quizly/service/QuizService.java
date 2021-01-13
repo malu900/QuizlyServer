@@ -58,14 +58,14 @@ public class QuizService {
     }
 
     @Transactional
-    public List<Guest> JoinQuiz(String name, String code) throws Exception {
+    public Quiz JoinQuiz(String name, String code) throws Exception {
         Quiz retrievedQuiz = quizRepository.findByCode(code);
         if(retrievedQuiz != null){
             Guest guest = guestService.CreateGuest(retrievedQuiz, name);
             if(guest != null){
                 retrievedQuiz.getParticipants().add(guest);
                 quizRepository.save(retrievedQuiz);
-                return retrievedQuiz.getParticipants();
+                return retrievedQuiz;
             }
             else {
                 throw new NullPointerException();
