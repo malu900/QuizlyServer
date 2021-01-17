@@ -30,9 +30,9 @@ public class QuizController {
         this.questionService = questionService;
     }
 
-    @GetMapping(path="/{quizId}")
-    public ResponseEntity<Quiz> getById(@PathVariable Long quizId) {
-       Quiz quiz = quizService.findById(quizId);
+    @GetMapping(path="/{quizCode}")
+    public ResponseEntity<Quiz> getByCode(@PathVariable String quizCode) {
+       Quiz quiz = quizService.findByCode(quizCode);
        return new ResponseEntity<>(quiz, HttpStatus.OK);
     }
 

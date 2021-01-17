@@ -56,6 +56,15 @@ public class QuizService {
         Optional<Quiz> quiz = quizRepository.findById(id);
         return quiz.orElseGet(Quiz::new);
     }
+    public Quiz findByCode(String code){
+        Quiz retreivedQuiz = quizRepository.findByCode(code);
+        if(retreivedQuiz != null){
+            return retreivedQuiz;
+        }
+        else {
+            throw new NullPointerException();
+        }
+    }
 
     @Transactional
     public Quiz JoinQuiz(String name, String code) throws Exception {
