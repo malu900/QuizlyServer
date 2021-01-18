@@ -31,6 +31,15 @@ public class MockGuestRepo implements GuestRepository {
         return guests.stream().filter(guest -> guest.getGuestId().equals(aLong)).findFirst();
     }
 
+    @Override
+    public Guest findByName(String name){
+        if(guests.stream().anyMatch(guest -> guest.getName().equals(name))){
+            return guests.stream().filter(guest -> guest.getName().equals(name)).findFirst().get();
+        }else{
+            return null;
+        }
+    }
+
     //unnecessary methods
 
     @Override
@@ -138,8 +147,4 @@ public class MockGuestRepo implements GuestRepository {
         return false;
     }
 
-    @Override
-    public Guest findByName(String name) {
-        return null;
-    }
 }
