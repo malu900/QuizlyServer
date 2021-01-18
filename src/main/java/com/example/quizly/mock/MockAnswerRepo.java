@@ -17,9 +17,9 @@ public class MockAnswerRepo implements AnswerRepository {
     private List<Answer> answers = new ArrayList<>();
 
     public MockAnswerRepo(){
-        answers.add(new Answer(1L, "pallet town", new Question()));
-        answers.add(new Answer(1L, "to stop making people do drugs", new Question()));
-        answers.add(new Answer(1L, "lazy town", new Question()));
+        answers.add(new Answer(1L, "pallet town", true, new Question()));
+        answers.add(new Answer(1L, "to stop making people do drugs", false, new Question()));
+        answers.add(new Answer(1L, "lazy town", false, new Question()));
     }
 
     @Override

@@ -25,7 +25,7 @@ public class Quiz {
     private List<Question> questions;
 
     @JsonIgnore
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -33,7 +33,6 @@ public class Quiz {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "quiz_id", insertable = false, updatable = false)
     private List<Guest> participants;
-
 
     public Quiz(long quizId, String quizName, List<Question> questions, User user, String code, List<Guest> participants) {
         this.quizId = quizId;

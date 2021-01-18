@@ -14,21 +14,22 @@ public class Answer {
 
     private String answerContent;
 
+    private boolean rightAnswer;
+
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "question_id")
     private Question question;
 
-
-    public Answer(long answerId, String answerContent, Question question){
+    public Answer(long answerId, String answerContent, boolean rightAnswer, Question question){
         this.answerId = answerId;
         this.answerContent = answerContent;
+        this.rightAnswer = rightAnswer;
         this.question = question;
     }
     public Answer() {
 
     }
-
 
     public Long getAnswerId() {
         return answerId;
@@ -52,5 +53,13 @@ public class Answer {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public boolean isRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setRightAnswer(boolean rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 }
