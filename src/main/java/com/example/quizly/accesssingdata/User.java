@@ -1,5 +1,7 @@
 package com.example.quizly.accesssingdata;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.yaml.snakeyaml.emitter.Emitable;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private List<Quiz>quizzes;

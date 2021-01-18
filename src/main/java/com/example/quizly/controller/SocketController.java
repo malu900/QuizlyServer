@@ -14,6 +14,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -70,11 +71,7 @@ private final QuizService quizService;
         try {
             Quiz quiz = quizService.JoinQuiz(name, code);
             String jsonGuests = objectMapper.writeValueAsString(quiz.getParticipants());
-            String jsonHost = objectMapper.writeValueAsString(quiz.getUser());
-            List<String> jsonObjects = new ArrayList<>();
-            jsonObjects.add(jsonGuests);
-            jsonObjects.add(jsonHost);
-            WsResponse response = new WsResponse(jsonObjects, WsMethod.JOIN);
+            WsResponse response = new WsResponse(jsonGuests, WsMethod.JOIN);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
@@ -83,6 +80,7 @@ private final QuizService quizService;
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
     @MessageMapping("/startGame/{code}")
     @SendTo("/topic/startGame/{code}")
     public ResponseEntity<WsResponse> startGame(@Payload Boolean start) throws JsonProcessingException {

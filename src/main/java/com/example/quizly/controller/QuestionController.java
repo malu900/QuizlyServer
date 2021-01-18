@@ -88,8 +88,8 @@ public class QuestionController {
         try{
             Question question = questionService.getCurrentQuestion(QuizId, RoundNumber);
             return new ResponseEntity<>(question, HttpStatus.OK);
-        }catch (Exception e){
-            throw new Exception("Can't find question", e);
+        }catch (IndexOutOfBoundsException e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
 }
