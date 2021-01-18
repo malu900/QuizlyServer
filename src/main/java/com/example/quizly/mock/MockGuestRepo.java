@@ -33,7 +33,7 @@ public class MockGuestRepo implements GuestRepository {
 
     @Override
     public Guest findByName(String name){
-        if(guests.stream().anyMatch(guest -> guest.getName().equals(name))){
+        if(guests.stream().filter(guest -> guest.getName().equals(name)).findFirst().isPresent()){
             return guests.stream().filter(guest -> guest.getName().equals(name)).findFirst().get();
         }else{
             return null;
