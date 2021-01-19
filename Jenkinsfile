@@ -15,7 +15,7 @@ pipeline {
 
     stage('Sonar') {
       steps {
-        sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar:9999'
+        sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar:9000'
       }
     }
 
