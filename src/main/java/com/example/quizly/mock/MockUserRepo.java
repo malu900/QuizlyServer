@@ -6,6 +6,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,25 @@ import java.util.Optional;
 
 public class MockUserRepo implements UserRepository {
     private List<User> users = new ArrayList<>();
+    private List<User> encryptedUsers = new ArrayList<>();
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public MockUserRepo(){
         users.add(new User(1L, "joseph joestar", "jojo@gmail.com", "iLoveEmiliaBRUH", new ArrayList<>()));
         users.add(new User(2L, "dio giovanna", "diogio@gmail.com", "annihilate69JOJO", new ArrayList<>()));
         users.add(new User(3L, "asta bruh", "futureWizardKinguh@gmail.com", "WillBenextWizardoOhkokhu", new ArrayList<>()));
+        encryptedUsers.add(new User(3L, "asta bruh", "futureWizardKinguh@gmail.com", encoder.encode("WillBenextWizardoOhkokhu"), new ArrayList<>()));
     }
+
+
 
     @Override
     public User findByEmail(String email) {
+        for (User user:encryptedUsers) {
+            if(user.getEmail().equals(email)){
+                return user;
+            }
+        }
         return null;
     }
 

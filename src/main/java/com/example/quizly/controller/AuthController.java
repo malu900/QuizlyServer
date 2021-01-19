@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("auth")
 @CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
+    private final AuthService authService;
+
     @Autowired
-    AuthService authService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping(path = "/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterModel user){
