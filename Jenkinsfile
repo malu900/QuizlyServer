@@ -1,8 +1,5 @@
 pipeline {
   agent any
-    tools {     
-        maven 'Maven 3.6.1' 
-    }
    stages {
       stage('Build and Test') {
       steps {
