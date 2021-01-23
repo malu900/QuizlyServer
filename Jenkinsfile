@@ -2,12 +2,16 @@ pipeline {
   agent any
 
    stages {
-      stage('Build') {
-        steps {
-          echo 'Building...'
-          echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
-        }
+      stage('Build and Test') {
+      steps {
+        sh 'mvn clean install'
+      }
    }
+   stage('Sonar') {
+      steps {
+        sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar:9000'
+      }
+    }
    stage('Test') {
      steps {
         echo 'Testing...'
