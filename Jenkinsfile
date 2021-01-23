@@ -1,23 +1,22 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:3.6.2-jdk-11'
-      args '--network=docker-jenkins-sonarqube'
-    }
+  agent any
 
-  }
-  stages {
-    stage('Build and Test') {
-      steps {
-        sh 'mvn clean install'
-      }
-    }
-
-    stage('Sonar') {
-      steps {
-        sh 'mvn sonar:sonar -Dsonar.host.url=http://sonar:9000'
-      }
-    }
-
+   stages {
+      stage('Build') {
+        steps {
+          echo 'Building...'
+          echo "Running ${env.BUILD_ID} ${env.BUILD_DISPLAY_NAME} on ${env.NODE_NAME} and JOB ${env.JOB_NAME}"
+        }
+   }
+   stage('Test') {
+     steps {
+        echo 'Testing...'
+     }
+   }
+   stage('Deploy') {
+     steps {
+       echo 'Deploying...'
+     }
+   }
   }
 }
