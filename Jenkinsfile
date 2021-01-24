@@ -7,9 +7,17 @@ pipeline {
       }
       }
       stage('Sonar') {
-      steps {
-        bat 'mvn sonar:sonar -Dsonar.host.url=http://sonar:9000'
-      }
+      environment {
+        scannerHome = tool 'SonarQubeScanner'
+    }
+    steps {
+        withSonarQubeEnv('sonarqube') {
+            sh "C:/sonarqube/sonarqube-8.5.1.38104/bin/windows-x86-64/bin/sonar-scanner"
+        }
+        timeout(time: 10, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
+    }
     }
    }
    
